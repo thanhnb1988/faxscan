@@ -1,5 +1,5 @@
 # Send-Fax-in-CSharp
-This is all about sending Faxes in c# (using Fax-modem and Telephone line). The code was 100% tested by sending Faxes to our client office in USA from Bangladesh with “U.S. Robotics V.92 USB Voice Modem” from Windows 7, 8 and 10.
+This is all about sending Faxes in c# 
 
 
 # Tasks to do before using the Code
