@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "SendFaxApp/1.0.0": {
+        "dependencies": {
+          "Interop.FAXCOMEXLib": "1.0.0.0"
+        },
+        "runtime": {
+          "SendFaxApp.dll": {}
+        }
+      },
+      "Interop.FAXCOMEXLib/1.0.0.0": {
+        "runtime": {
+          "Interop.FAXCOMEXLib.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SendFaxApp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Interop.FAXCOMEXLib/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
