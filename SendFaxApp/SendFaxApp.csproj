@@ -9,13 +9,45 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <PackageReference Include="Mindbox.Data.Linq" Version="10.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Interop.FAXCOMEXLib">
       <HintPath>lib\Interop.FAXCOMEXLib.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{3259aa49-8aa1-44d3-9025-a0b520596a8c}" />
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="FaxLinQ.designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FaxLinQ.dbml</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Database\FaxConfigDB.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="FaxLinQ.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>FaxLinQ.designer.cs</LastGenOutput>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>
