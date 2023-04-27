@@ -80,12 +80,35 @@ namespace SendFaxApp
             }
 
             config.WebSocketUrl = txtWebSocketUrl.Text;
-         
+
             if (isInsert)
             {
                 context.FaxConfigs.InsertOnSubmit(config);
             }
             context.SubmitChanges();
+        }
+
+        private void btnSendFaxTest_Click(object sender, EventArgs e)
+        {
+            var config = GetDefaultFaxConfig();
+            FaxSender faxSender = new FaxSender(config.HostName);
+
+            FaxSenderInfo faxSenderInfo = new FaxSenderInfo();
+            faxSenderInfo.Name = config.SenderName;
+            faxSenderInfo.CompanyName = config.CompanyName;
+            faxSenderInfo.Subject = txtDocumentSubject.Text;
+
+            FaxDocInfo faxDocInfo = new FaxDocInfo();
+            faxDocInfo.DocumentName = txtDocumentName.Text;
+            faxDocInfo.Body = "Test";
+
+            FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
+            faxRecipientsInfo.bstrFaxNumber = txtFaxNumber.Text;
+            faxRecipientsInfo.bstrRecipientName = txtReiverName.Text;
+
+            faxSender.SendFax(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
+
+
         }
     }
 }

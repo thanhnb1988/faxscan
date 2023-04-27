@@ -46,10 +46,21 @@
             txtWebSocketUrl = new TextBox();
             label6 = new Label();
             label5 = new Label();
+            tabPage3 = new TabPage();
+            btnSendFaxTest = new Button();
+            txtReiverName = new TextBox();
+            label7 = new Label();
+            txtFaxNumber = new TextBox();
+            lblReceive = new Label();
+            txtDocumentSubject = new TextBox();
+            label9 = new Label();
+            txtDocumentName = new TextBox();
+            label10 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             panel1.SuspendLayout();
+            tabPage3.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -99,6 +110,7 @@
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
+            tabControl1.Controls.Add(tabPage3);
             tabControl1.Location = new Point(12, 12);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
@@ -233,6 +245,100 @@
             label5.TabIndex = 15;
             label5.Text = "WEB SOCKET CONNECT INFORMATION";
             // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(btnSendFaxTest);
+            tabPage3.Controls.Add(txtReiverName);
+            tabPage3.Controls.Add(label7);
+            tabPage3.Controls.Add(txtFaxNumber);
+            tabPage3.Controls.Add(lblReceive);
+            tabPage3.Controls.Add(txtDocumentSubject);
+            tabPage3.Controls.Add(label9);
+            tabPage3.Controls.Add(txtDocumentName);
+            tabPage3.Controls.Add(label10);
+            tabPage3.Location = new Point(4, 24);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(677, 306);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "Send Fax Test";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btnSendFaxTest
+            // 
+            btnSendFaxTest.ForeColor = Color.FromArgb(0, 0, 192);
+            btnSendFaxTest.Location = new Point(214, 228);
+            btnSendFaxTest.Name = "btnSendFaxTest";
+            btnSendFaxTest.Size = new Size(96, 28);
+            btnSendFaxTest.TabIndex = 22;
+            btnSendFaxTest.Text = "SEND FAX TEST";
+            btnSendFaxTest.UseVisualStyleBackColor = true;
+            btnSendFaxTest.Click += btnSendFaxTest_Click;
+            // 
+            // txtReiverName
+            // 
+            txtReiverName.Location = new Point(214, 170);
+            txtReiverName.Name = "txtReiverName";
+            txtReiverName.Size = new Size(364, 23);
+            txtReiverName.TabIndex = 21;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(85, 173);
+            label7.Name = "label7";
+            label7.Size = new Size(94, 15);
+            label7.TabIndex = 20;
+            label7.Text = "RECEIVER NAME";
+            // 
+            // txtFaxNumber
+            // 
+            txtFaxNumber.Location = new Point(214, 121);
+            txtFaxNumber.Name = "txtFaxNumber";
+            txtFaxNumber.Size = new Size(364, 23);
+            txtFaxNumber.TabIndex = 19;
+            // 
+            // lblReceive
+            // 
+            lblReceive.AutoSize = true;
+            lblReceive.Location = new Point(85, 129);
+            lblReceive.Name = "lblReceive";
+            lblReceive.Size = new Size(78, 15);
+            lblReceive.TabIndex = 18;
+            lblReceive.Text = "FAX NUMBER";
+            // 
+            // txtDocumentSubject
+            // 
+            txtDocumentSubject.Location = new Point(214, 35);
+            txtDocumentSubject.Name = "txtDocumentSubject";
+            txtDocumentSubject.Size = new Size(364, 23);
+            txtDocumentSubject.TabIndex = 15;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(85, 38);
+            label9.Name = "label9";
+            label9.Size = new Size(52, 15);
+            label9.TabIndex = 14;
+            label9.Text = "SUBJECT";
+            // 
+            // txtDocumentName
+            // 
+            txtDocumentName.Location = new Point(214, 77);
+            txtDocumentName.Name = "txtDocumentName";
+            txtDocumentName.Size = new Size(364, 23);
+            txtDocumentName.TabIndex = 17;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(85, 80);
+            label10.Name = "label10";
+            label10.Size = new Size(109, 15);
+            label10.TabIndex = 16;
+            label10.Text = "DOCUMENT NAME";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -247,6 +353,8 @@
             tabPage2.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            tabPage3.ResumeLayout(false);
+            tabPage3.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -269,5 +377,15 @@
         private TextBox txtWebSocketUrl;
         private Label label6;
         private Button btnConfigWebSocket;
+        private TabPage tabPage3;
+        private Button btnSendFaxTest;
+        private TextBox txtReiverName;
+        private Label label7;
+        private TextBox txtFaxNumber;
+        private Label lblReceive;
+        private TextBox txtDocumentSubject;
+        private Label label9;
+        private TextBox txtDocumentName;
+        private Label label10;
     }
 }
