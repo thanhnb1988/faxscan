@@ -1,0 +1,7 @@
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net5.0-windows\SendFaxApp.csproj.AssemblyReference.cache
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net5.0-windows\SendFaxApp.Form1.resources
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net5.0-windows\SendFaxApp.csproj.GenerateResource.cache
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net5.0-windows\SendFaxApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net5.0-windows\SendFaxApp.AssemblyInfoInputs.cache
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net5.0-windows\SendFaxApp.AssemblyInfo.cs
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net5.0-windows\SendFaxApp.csproj.CoreCompileInputs.cache

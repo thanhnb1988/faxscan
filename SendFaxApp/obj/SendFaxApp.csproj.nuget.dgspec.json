@@ -43,6 +43,10 @@
             "Mindbox.Data.Linq": {
               "target": "Package",
               "version": "[10.5.0, )"
+            },
+            "WebSocketSharp-netstandard": {
+              "target": "Package",
+              "version": "[1.0.1, )"
             }
           },
           "imports": [

@@ -14,7 +14,7 @@ namespace SendFaxApp.Model
             try
             {
                 faxServer = new FaxServer();
-                faxServer.Connect(bstrServerName);
+                faxServer.Connect(Environment.MachineName);
                 RegisterFaxServerEvents();
             }
             catch (Exception ex)

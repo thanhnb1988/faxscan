@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Windows.Forms;
 using SendFaxApp.Model;
 using Microsoft.VisualBasic;
+using WebSocketSharp;
+using System.Diagnostics;
+using System.Security;
 
 namespace SendFaxApp
 {
@@ -16,10 +18,27 @@ namespace SendFaxApp
 
         FaxLinQDataContext context = new FaxLinQDataContext();
 
+        private WebSocket client;
+
+        private String fileFaxTest = "";
+
+        const string host = "ws://ablaze-sophisticated-sound.glitch.me";
+
         public Form1()
         {
             InitializeComponent();
             initDataConifg();
+            onConnectWebSocket();
+            clearOpenFileSendFaxTest();
+
+            lblInfoTest.Text = Environment.MachineName;
+
+
+        }
+
+        private void clearOpenFileSendFaxTest()
+        {
+            fileFaxTest = string.Empty;
         }
 
         private void initDataConifg()
@@ -31,11 +50,11 @@ namespace SendFaxApp
                 txtHostName.Text = config.HostName;
                 txtSenderName.Text = config.SenderName;
                 txtSenderCompany.Text = config.CompanyName;
+                txtWebSocketUrl.Text = config.WebSocketUrl;
+                lblFolderSelected.Text = config.FileSaveUrl;
 
             }
         }
-
-
 
         private FaxConfig? GetDefaultFaxConfig()
         {
@@ -46,6 +65,11 @@ namespace SendFaxApp
 
         private void btnTestFAX_Click(object sender, EventArgs e)
         {
+            bool isValidate = validateFaxClick();
+            if (!isValidate)
+            {
+                return;
+            }
             var config = GetDefaultFaxConfig();
             bool isInsert = false;
             if (config == null)
@@ -66,10 +90,86 @@ namespace SendFaxApp
             }
             context.SubmitChanges();
 
+            clearOpenFileSendFaxTest();
+
+            MessageBox.Show("Update Fax Config Successfully");
+
+        }
+
+        private bool validateFaxClick()
+        {
+            try
+            {
+                clearValidate();
+
+                validateIPFax();
+
+                validateHostName();
+
+                validateSenderName();
+
+                validateCompanyName();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+        private void clearValidate()
+        {
+            errorProviders.Clear();
+        }
+
+        private void validateIPFax()
+        {
+            if (txtIP.Text == string.Empty)
+            {
+                errorProviders.SetError(txtIP, "Must input the IP fax");
+
+                throw new Exception();
+            }
+        }
+
+        private void validateHostName()
+        {
+            if (txtHostName.Text == string.Empty)
+            {
+                errorProviders.SetError(txtHostName, "Must input the HostName fax");
+
+                throw new Exception();
+            }
+        }
+
+        private void validateSenderName()
+        {
+            if (txtSenderName.Text == string.Empty)
+            {
+                errorProviders.SetError(txtSenderName, "Must input the Sender Name");
+
+                throw new Exception();
+            }
+        }
+
+        private void validateCompanyName()
+        {
+            if (txtSenderCompany.Text == string.Empty)
+            {
+                errorProviders.SetError(txtSenderCompany, "Must input the Company Name");
+
+                throw new Exception();
+            }
         }
 
         private void btnConfigWebSocket_Click(object sender, EventArgs e)
         {
+            bool isValidate = validateSettings();
+            if (!isValidate)
+            {
+                return;
+            }
             var config = GetDefaultFaxConfig();
             bool isInsert = false;
             if (config == null)
@@ -78,18 +178,116 @@ namespace SendFaxApp
                 isInsert = true;
 
             }
+            onConnectWebSocket();
 
             config.WebSocketUrl = txtWebSocketUrl.Text;
+            config.FileSaveUrl = lblFolderSelected.Text;
 
             if (isInsert)
             {
                 context.FaxConfigs.InsertOnSubmit(config);
             }
             context.SubmitChanges();
+
+            clearOpenFileSendFaxTest();
+
+            MessageBox.Show("Update Settings Successfully");
+        }
+
+        private bool validateSettings()
+        {
+            try
+            {
+                clearValidate();
+
+                validateWebSocketUrl();
+                validateSelectedFolder();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        private void validateWebSocketUrl()
+        {
+            if (txtWebSocketUrl.Text == string.Empty)
+            {
+                errorProviders.SetError(txtWebSocketUrl, "Must input the web socket url");
+
+                throw new Exception();
+            }
+        }
+
+        private void validateSelectedFolder()
+        {
+            if (lblFolderSelected.Text == string.Empty)
+            {
+                errorProviders.SetError(btnBrowserFolder, "Must input folder selected");
+
+                throw new Exception();
+            }
+        }
+
+
+        private bool onConnectWebSocket()
+        {
+            bool isConnectSuccess = true;
+            try
+            {
+                client = new WebSocket(host);
+                client.OnOpen += (ss, ee) =>
+                {
+                    isConnectSuccess = true;
+                    onWebSocketOpen(ss, ee);
+                };
+                client.OnMessage += (ss, ee) =>
+                {
+                    isConnectSuccess = false;
+                    lblWebSocketSatus.Text = " Data: " + ee.Data;
+                };
+
+                client.OnError += (ss, ee) =>
+                {
+                    isConnectSuccess = false;
+                    lblWebSocketSatus.Text = " Error: " + ee.Message;
+                };
+
+                client.OnClose += (ss, ee) =>
+                {
+                    isConnectSuccess = false;
+                    lblWebSocketSatus.Text = (string.Format("Disconnected with {0}", host));
+                };
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        private void onWebSocketOpen(object sender, EventArgs ee)
+        {
+            lblWebSocketSatus.Text = (string.Format("Connected to {0} successfully", host));
+        }
+
+        private void onWebSockeError()
+        {
+            lblWebSocketSatus.Text = (string.Format("Error  {0} successfully", host));
         }
 
         private void btnSendFaxTest_Click(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(fileFaxTest))
+            {
+                MessageBox.Show("Choose file to send fax");
+                return;
+            }
+
             var config = GetDefaultFaxConfig();
             FaxSender faxSender = new FaxSender(config.HostName);
 
@@ -100,14 +298,66 @@ namespace SendFaxApp
 
             FaxDocInfo faxDocInfo = new FaxDocInfo();
             faxDocInfo.DocumentName = txtDocumentName.Text;
-            faxDocInfo.Body = "Test";
+            faxDocInfo.Body = fileFaxTest;
+
+
 
             FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
             faxRecipientsInfo.bstrFaxNumber = txtFaxNumber.Text;
             faxRecipientsInfo.bstrRecipientName = txtReiverName.Text;
-
+            clearOpenFileSendFaxTest();
             faxSender.SendFax(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
 
+
+        }
+
+        private void btnBrowserFolder_Click(object sender, EventArgs e)
+        {
+            if (foldersavefileDigalog.ShowDialog() == DialogResult.OK)
+            {
+                lblFolderSelected.Text = foldersavefileDigalog.SelectedPath;
+
+            }
+        }
+
+
+        /**
+         * Run task in back ground with timespam
+         * 
+         * */
+        async Task RunInBackground(TimeSpan timeSpan, Action action)
+        {
+            var periodicTimer = new PeriodicTimer(timeSpan);
+            while (await periodicTimer.WaitForNextTickAsync())
+            {
+                action();
+            }
+        }
+
+        private void btnWebSocketConnect_Click(object sender, EventArgs e)
+        {
+            if (client.IsAlive)
+            {
+                client.Close();
+            }
+            client.Connect();
+        }
+
+        private void btnOpenFileToSendFax_Click(object sender, EventArgs e)
+        {
+            if (openFileToSendFax.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    fileFaxTest = openFileToSendFax.FileName;
+
+                }
+                catch (SecurityException ex)
+                {
+                    MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
+                    $"Details:\n\n{ex.StackTrace}");
+                }
+            }
 
         }
     }

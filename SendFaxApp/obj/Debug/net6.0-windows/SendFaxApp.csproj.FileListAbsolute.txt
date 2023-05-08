@@ -17,7 +17,6 @@ C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\Send-Fax-in-CSharp-master\Send
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\Send-Fax-in-CSharp-master\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.pdb
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\Send-Fax-in-CSharp-master\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.genruntimeconfig.cache
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\Send-Fax-in-CSharp-master\SendFaxApp\obj\Debug\net6.0-windows\ref\SendFaxApp.dll
-C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\Database\FaxConfigDB.mdf
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\SendFaxApp.exe
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\SendFaxApp.dll.config
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\SendFaxApp.deps.json
@@ -48,6 +47,7 @@ C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\n
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\System.Runtime.Caching.dll
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\System.Security.Permissions.dll
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\System.Windows.Extensions.dll
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\websocket-sharp.dll
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll

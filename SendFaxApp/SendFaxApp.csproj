@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Mindbox.Data.Linq" Version="10.5.0" />
+    <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,7 +39,7 @@
 
   <ItemGroup>
     <None Update="Database\FaxConfigDB.mdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="FaxLinQ.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>

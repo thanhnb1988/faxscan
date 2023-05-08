@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label1 = new Label();
             txtIP = new TextBox();
             lblHostName = new Label();
@@ -42,11 +43,18 @@
             label2 = new Label();
             tabPage2 = new TabPage();
             panel1 = new Panel();
+            lblWebSocketSatus = new Label();
+            btnWebSocketConnect = new Button();
+            lblFolderSelected = new Label();
+            btnBrowserFolder = new Button();
+            label11 = new Label();
             btnConfigWebSocket = new Button();
             txtWebSocketUrl = new TextBox();
             label6 = new Label();
             label5 = new Label();
             tabPage3 = new TabPage();
+            btnOpenFileToSendFax = new Button();
+            label8 = new Label();
             btnSendFaxTest = new Button();
             txtReiverName = new TextBox();
             label7 = new Label();
@@ -56,11 +64,16 @@
             label9 = new Label();
             txtDocumentName = new TextBox();
             label10 = new Label();
+            errorProviders = new ErrorProvider(components);
+            foldersavefileDigalog = new FolderBrowserDialog();
+            openFileToSendFax = new OpenFileDialog();
+            lblInfoTest = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             panel1.SuspendLayout();
             tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProviders).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -137,7 +150,7 @@
             tabPage1.Padding = new Padding(3);
             tabPage1.Size = new Size(677, 306);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "FAX CONFIG";
+            tabPage1.Text = "Fax Config";
             tabPage1.UseVisualStyleBackColor = true;
             // 
             // label4
@@ -196,6 +209,11 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(lblWebSocketSatus);
+            panel1.Controls.Add(btnWebSocketConnect);
+            panel1.Controls.Add(lblFolderSelected);
+            panel1.Controls.Add(btnBrowserFolder);
+            panel1.Controls.Add(label11);
             panel1.Controls.Add(btnConfigWebSocket);
             panel1.Controls.Add(txtWebSocketUrl);
             panel1.Controls.Add(label6);
@@ -205,11 +223,63 @@
             panel1.Size = new Size(667, 301);
             panel1.TabIndex = 0;
             // 
+            // lblWebSocketSatus
+            // 
+            lblWebSocketSatus.AutoSize = true;
+            lblWebSocketSatus.ForeColor = Color.Red;
+            lblWebSocketSatus.Location = new Point(166, 92);
+            lblWebSocketSatus.Name = "lblWebSocketSatus";
+            lblWebSocketSatus.Size = new Size(0, 15);
+            lblWebSocketSatus.TabIndex = 23;
+            // 
+            // btnWebSocketConnect
+            // 
+            btnWebSocketConnect.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            btnWebSocketConnect.ForeColor = Color.FromArgb(0, 0, 192);
+            btnWebSocketConnect.Location = new Point(286, 201);
+            btnWebSocketConnect.Name = "btnWebSocketConnect";
+            btnWebSocketConnect.Size = new Size(182, 28);
+            btnWebSocketConnect.TabIndex = 22;
+            btnWebSocketConnect.Text = "TEST WEBSOCKET CONNECT ";
+            btnWebSocketConnect.UseVisualStyleBackColor = true;
+            btnWebSocketConnect.Click += btnWebSocketConnect_Click;
+            // 
+            // lblFolderSelected
+            // 
+            lblFolderSelected.AutoSize = true;
+            lblFolderSelected.BackColor = Color.Red;
+            lblFolderSelected.Location = new Point(164, 167);
+            lblFolderSelected.Name = "lblFolderSelected";
+            lblFolderSelected.Size = new Size(0, 15);
+            lblFolderSelected.TabIndex = 21;
+            // 
+            // btnBrowserFolder
+            // 
+            btnBrowserFolder.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            btnBrowserFolder.ForeColor = Color.FromArgb(0, 0, 192);
+            btnBrowserFolder.Location = new Point(164, 124);
+            btnBrowserFolder.Name = "btnBrowserFolder";
+            btnBrowserFolder.Size = new Size(183, 28);
+            btnBrowserFolder.TabIndex = 20;
+            btnBrowserFolder.Text = "Browser Folder To Save Files";
+            btnBrowserFolder.UseVisualStyleBackColor = true;
+            btnBrowserFolder.Click += btnBrowserFolder_Click;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label11.Location = new Point(35, 131);
+            label11.Name = "label11";
+            label11.Size = new Size(61, 15);
+            label11.TabIndex = 19;
+            label11.Text = " FOLDERS";
+            // 
             // btnConfigWebSocket
             // 
             btnConfigWebSocket.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             btnConfigWebSocket.ForeColor = Color.FromArgb(0, 0, 192);
-            btnConfigWebSocket.Location = new Point(164, 103);
+            btnConfigWebSocket.Location = new Point(164, 201);
             btnConfigWebSocket.Name = "btnConfigWebSocket";
             btnConfigWebSocket.Size = new Size(96, 28);
             btnConfigWebSocket.TabIndex = 18;
@@ -247,6 +317,9 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(lblInfoTest);
+            tabPage3.Controls.Add(btnOpenFileToSendFax);
+            tabPage3.Controls.Add(label8);
             tabPage3.Controls.Add(btnSendFaxTest);
             tabPage3.Controls.Add(txtReiverName);
             tabPage3.Controls.Add(label7);
@@ -264,10 +337,29 @@
             tabPage3.Text = "Send Fax Test";
             tabPage3.UseVisualStyleBackColor = true;
             // 
+            // btnOpenFileToSendFax
+            // 
+            btnOpenFileToSendFax.Location = new Point(214, 121);
+            btnOpenFileToSendFax.Name = "btnOpenFileToSendFax";
+            btnOpenFileToSendFax.Size = new Size(160, 23);
+            btnOpenFileToSendFax.TabIndex = 24;
+            btnOpenFileToSendFax.Text = "Choose file to send fax";
+            btnOpenFileToSendFax.UseVisualStyleBackColor = true;
+            btnOpenFileToSendFax.Click += btnOpenFileToSendFax_Click;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(85, 122);
+            label8.Name = "label8";
+            label8.Size = new Size(25, 15);
+            label8.TabIndex = 23;
+            label8.Text = "File";
+            // 
             // btnSendFaxTest
             // 
             btnSendFaxTest.ForeColor = Color.FromArgb(0, 0, 192);
-            btnSendFaxTest.Location = new Point(214, 228);
+            btnSendFaxTest.Location = new Point(214, 255);
             btnSendFaxTest.Name = "btnSendFaxTest";
             btnSendFaxTest.Size = new Size(96, 28);
             btnSendFaxTest.TabIndex = 22;
@@ -277,7 +369,7 @@
             // 
             // txtReiverName
             // 
-            txtReiverName.Location = new Point(214, 170);
+            txtReiverName.Location = new Point(214, 205);
             txtReiverName.Name = "txtReiverName";
             txtReiverName.Size = new Size(364, 23);
             txtReiverName.TabIndex = 21;
@@ -285,7 +377,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(85, 173);
+            label7.Location = new Point(85, 208);
             label7.Name = "label7";
             label7.Size = new Size(94, 15);
             label7.TabIndex = 20;
@@ -293,7 +385,7 @@
             // 
             // txtFaxNumber
             // 
-            txtFaxNumber.Location = new Point(214, 121);
+            txtFaxNumber.Location = new Point(214, 156);
             txtFaxNumber.Name = "txtFaxNumber";
             txtFaxNumber.Size = new Size(364, 23);
             txtFaxNumber.TabIndex = 19;
@@ -301,7 +393,7 @@
             // lblReceive
             // 
             lblReceive.AutoSize = true;
-            lblReceive.Location = new Point(85, 129);
+            lblReceive.Location = new Point(85, 164);
             lblReceive.Name = "lblReceive";
             lblReceive.Size = new Size(78, 15);
             lblReceive.TabIndex = 18;
@@ -339,6 +431,19 @@
             label10.TabIndex = 16;
             label10.Text = "DOCUMENT NAME";
             // 
+            // errorProviders
+            // 
+            errorProviders.ContainerControl = this;
+            // 
+            // lblInfoTest
+            // 
+            lblInfoTest.AutoSize = true;
+            lblInfoTest.Location = new Point(218, 9);
+            lblInfoTest.Name = "lblInfoTest";
+            lblInfoTest.Size = new Size(61, 15);
+            lblInfoTest.TabIndex = 25;
+            lblInfoTest.Text = "lblInfoTest";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -355,6 +460,7 @@
             panel1.PerformLayout();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProviders).EndInit();
             ResumeLayout(false);
         }
 
@@ -387,5 +493,16 @@
         private Label label9;
         private TextBox txtDocumentName;
         private Label label10;
+        private Button btnOpenFileToSendFax;
+        private Label label8;
+        private ErrorProvider errorProviders;
+        private Button btnBrowserFolder;
+        private Label label11;
+        private FolderBrowserDialog foldersavefileDigalog;
+        private Label lblFolderSelected;
+        private Button btnWebSocketConnect;
+        private Label lblWebSocketSatus;
+        private OpenFileDialog openFileToSendFax;
+        private Label lblInfoTest;
     }
 }
