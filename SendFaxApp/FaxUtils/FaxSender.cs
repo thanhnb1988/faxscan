@@ -86,7 +86,7 @@ namespace SendFaxApp.Model
                 object submitReturnValue = faxDoc.Submit(faxServer.ServerName);
                 faxDoc = null;                
             }
-            catch (System.Runtime.InteropServices.COMException comException)
+            catch (Exception comException)
             {
                 Console.WriteLine("Error connecting to fax server. Error Message: " + comException.Message);
                 Console.WriteLine("StackTrace: " + comException.StackTrace);

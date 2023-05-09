@@ -10,6 +10,7 @@ using Microsoft.VisualBasic;
 using WebSocketSharp;
 using System.Diagnostics;
 using System.Security;
+using FAXCOMEXLib;
 
 namespace SendFaxApp
 {
@@ -288,8 +289,10 @@ namespace SendFaxApp
                 return;
             }
 
+
+
             var config = GetDefaultFaxConfig();
-            FaxSender faxSender = new FaxSender(config.HostName);
+            Model.FaxSender faxSender = new Model.FaxSender(config.HostName);
 
             FaxSenderInfo faxSenderInfo = new FaxSenderInfo();
             faxSenderInfo.Name = config.SenderName;

@@ -9,14 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mindbox.Data.Linq" Version="10.5.0" />
-    <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
+    <COMReference Include="FAXCOMEXLib">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>2bf34c1a-8cac-419f-8547-32fdf6505db8</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Interop.FAXCOMEXLib">
-      <HintPath>lib\Interop.FAXCOMEXLib.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Mindbox.Data.Linq" Version="10.5.0" />
+    <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
