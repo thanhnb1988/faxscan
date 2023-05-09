@@ -14,4 +14,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SendFaxApp
-build_property.ProjectDir = C:\Users\admin\Desktop\SourceCode\SendFaxApp\
+build_property.ProjectDir = C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\

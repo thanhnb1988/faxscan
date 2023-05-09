@@ -2453,19 +2453,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {}
+    "C:\\Users\\ThaoPC\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\Desktop\\SourceCode\\SendFaxApp\\SendFaxApp.csproj",
+      "projectUniqueName": "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SendFaxApp\\SendFaxApp.csproj",
       "projectName": "SendFaxApp",
-      "projectPath": "C:\\Users\\admin\\Desktop\\SourceCode\\SendFaxApp\\SendFaxApp.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\Desktop\\SourceCode\\SendFaxApp\\obj\\",
+      "projectPath": "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SendFaxApp\\SendFaxApp.csproj",
+      "packagesPath": "C:\\Users\\ThaoPC\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SendFaxApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ThaoPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

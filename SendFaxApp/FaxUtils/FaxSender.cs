@@ -108,6 +108,37 @@ namespace SendFaxApp.Model
             faxDoc.Recipients.Add(faxRecipientsInfo.bstrFaxNumber, faxRecipientsInfo.bstrRecipientName);
         }
 
+        public void SendFaxMultiFiles(FaxSenderInfo faxSenderInfo, FaxDocInfo faxDocInfo, FaxRecipientsInfo faxRecipientsInfo)
+        {
+            try
+            {
+                FaxDocumentSetupMultiFiles(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
+                object objFaxOutgouingJobIds;
+                object submitReturnValue = faxDoc.Submit2(faxServer.ServerName, out objFaxOutgouingJobIds);
+                faxDoc = null;
+            }
+            catch (Exception comException)
+            {
+                Console.WriteLine("Error connecting to fax server. Error Message: " + comException.Message);
+                Console.WriteLine("StackTrace: " + comException.StackTrace);
+            }
+        }
+
+        private void FaxDocumentSetupMultiFiles(FaxSenderInfo faxSenderInfo, FaxDocInfo faxDocInfo, FaxRecipientsInfo faxRecipientsInfo)
+        {
+            faxDoc = new FaxDocument();
+            faxDoc.Priority = FAX_PRIORITY_TYPE_ENUM.fptHIGH;
+            faxDoc.ReceiptType = FAX_RECEIPT_TYPE_ENUM.frtNONE;
+            faxDoc.AttachFaxToReceipt = true;
+
+            faxDoc.Sender.Name = faxSenderInfo.Name;
+            faxDoc.Sender.Company = faxSenderInfo.CompanyName;
+            faxDoc.Bodies = faxDocInfo.Body;
+            faxDoc.Subject = faxSenderInfo.Subject;
+            faxDoc.DocumentName = faxDocInfo.DocumentName;
+            faxDoc.Recipients.Add(faxRecipientsInfo.bstrFaxNumber, faxRecipientsInfo.bstrRecipientName);
+        }
+
     }
 }
 
