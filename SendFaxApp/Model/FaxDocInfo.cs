@@ -15,7 +15,6 @@ namespace SendFaxApp.Model
         }
         public string DocumentName { get; set; }
         public string Body { get; set; }
-
         public List<string> Bodies { get; set; }
     }
 }
