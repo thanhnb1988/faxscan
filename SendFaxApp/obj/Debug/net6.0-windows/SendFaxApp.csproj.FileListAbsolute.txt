@@ -72,6 +72,8 @@ C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\n
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.pdb
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.genruntimeconfig.cache
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\ref\SendFaxApp.dll
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\Interop.FAXCOMEXLib.dll
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.csproj.ResolveComReference.cache
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\bin\Debug\net6.0-windows\SendFaxApp.exe
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\bin\Debug\net6.0-windows\SendFaxApp.dll.config
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\bin\Debug\net6.0-windows\SendFaxApp.deps.json
@@ -115,6 +117,8 @@ C:\Users\admin\Desktop\SourceCode\SendFaxApp\bin\Debug\net6.0-windows\runtimes\w
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.csproj.AssemblyReference.cache
+C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\Interop.FAXCOMEXLib.dll
+C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.csproj.ResolveComReference.cache
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.Form1.resources
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.csproj.GenerateResource.cache
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.GeneratedMSBuildEditorConfig.editorconfig
@@ -127,7 +131,3 @@ C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\refint\Sen
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.pdb
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.genruntimeconfig.cache
 C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\ref\SendFaxApp.dll
-C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\Interop.FAXCOMEXLib.dll
-C:\Users\admin\Desktop\SourceCode\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.csproj.ResolveComReference.cache
-C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\Interop.FAXCOMEXLib.dll
-C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.csproj.ResolveComReference.cache

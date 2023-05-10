@@ -11,6 +11,7 @@ using WebSocketSharp;
 using System.Diagnostics;
 using System.Security;
 using FAXCOMEXLib;
+using System.Collections;
 
 namespace SendFaxApp
 {
@@ -301,16 +302,15 @@ namespace SendFaxApp
 
             FaxDocInfo faxDocInfo = new FaxDocInfo();
             faxDocInfo.DocumentName = txtDocumentName.Text;
-            faxDocInfo.Body = fileFaxTest;
-           
-
-
+          
+            faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST.pdf");
+            faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST_2.pdf");
 
             FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
             faxRecipientsInfo.bstrFaxNumber = txtFaxNumber.Text;
             faxRecipientsInfo.bstrRecipientName = txtReiverName.Text;
             clearOpenFileSendFaxTest();
-            faxSender.SendFax(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
+            faxSender.SendFaxMultiFiles(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
 
 
         }
