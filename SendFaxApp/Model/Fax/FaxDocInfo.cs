@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SendFaxApp.Model
+namespace SendFaxApp.Model.Fax
 {
     public class FaxDocInfo
     {

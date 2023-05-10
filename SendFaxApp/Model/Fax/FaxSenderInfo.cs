@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SendFaxApp.Model
+namespace SendFaxApp.Model.Fax
 {
-    public  class FaxSenderInfo
+    public class FaxSenderInfo
     {
         public string Name { get; set; }
         public string CompanyName { get; set; }

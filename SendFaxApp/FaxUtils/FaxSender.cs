@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using FAXCOMEXLib;
+using SendFaxApp.Model.Fax;
 
 namespace SendFaxApp.Model
 {
@@ -105,14 +106,18 @@ namespace SendFaxApp.Model
             faxDoc.Body = faxDocInfo.Body;
             faxDoc.Subject = faxSenderInfo.Subject;
             faxDoc.DocumentName = faxDocInfo.DocumentName;
-            faxDoc.Recipients.Add(faxRecipientsInfo.bstrFaxNumber, faxRecipientsInfo.bstrRecipientName);
+
+            foreach (var item in faxRecipientsInfo.listFaxRecipientsItem)
+            {
+                faxDoc.Recipients.Add(item.Number, item.Name);
+            }
         }
 
-        public void SendFaxMultiFiles(FaxSenderInfo faxSenderInfo, FaxDocInfo faxDocInfo, FaxRecipientsInfo faxRecipientsInfo)
+        public void SendFaxMultiFilesAndMultiUers(FaxSenderInfo faxSenderInfo, FaxDocInfo faxDocInfo, FaxRecipientsInfo faxRecipientsInfo)
         {
             try
             {
-                FaxDocumentSetupMultiFiles(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
+                FaxDocumentSetupMultiFilesAndMultiUsers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
                 object objFaxOutgouingJobIds;
                 object submitReturnValue = faxDoc.Submit2(faxServer.ServerName, out objFaxOutgouingJobIds);
                 faxDoc = null;
@@ -124,7 +129,7 @@ namespace SendFaxApp.Model
             }
         }
 
-        private void FaxDocumentSetupMultiFiles(FaxSenderInfo faxSenderInfo, FaxDocInfo faxDocInfo, FaxRecipientsInfo faxRecipientsInfo)
+        private void FaxDocumentSetupMultiFilesAndMultiUsers(FaxSenderInfo faxSenderInfo, FaxDocInfo faxDocInfo, FaxRecipientsInfo faxRecipientsInfo)
         {
             faxDoc = new FaxDocument();
             faxDoc.Priority = FAX_PRIORITY_TYPE_ENUM.fptHIGH;
@@ -136,7 +141,10 @@ namespace SendFaxApp.Model
             faxDoc.Bodies = faxDocInfo.Bodies.ToArray();
             faxDoc.Subject = faxSenderInfo.Subject;
             faxDoc.DocumentName = faxDocInfo.DocumentName;
-            faxDoc.Recipients.Add(faxRecipientsInfo.bstrFaxNumber, faxRecipientsInfo.bstrRecipientName);
+            foreach(var item in faxRecipientsInfo.listFaxRecipientsItem)
+            {
+                faxDoc.Recipients.Add(item.Number,item.Name);
+            }
         }
 
     }

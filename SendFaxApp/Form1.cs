@@ -5,13 +5,13 @@ using System;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Windows.Forms;
-using SendFaxApp.Model;
 using Microsoft.VisualBasic;
 using WebSocketSharp;
 using System.Diagnostics;
 using System.Security;
 using FAXCOMEXLib;
 using System.Collections;
+using SendFaxApp.Model.Fax;
 
 namespace SendFaxApp
 {
@@ -307,10 +307,11 @@ namespace SendFaxApp
             faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST_2.pdf");
 
             FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
-            faxRecipientsInfo.bstrFaxNumber = txtFaxNumber.Text;
-            faxRecipientsInfo.bstrRecipientName = txtReiverName.Text;
+            faxRecipientsInfo.listFaxRecipientsItem = new List<FaxRecipientsItem>();
+            faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = txtFaxNumber.Text, Name =txtReiverName.Text });
+            faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number="2222",Name=""});
             clearOpenFileSendFaxTest();
-            faxSender.SendFaxMultiFiles(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
+            faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
 
 
         }
