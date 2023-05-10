@@ -134,6 +134,7 @@ namespace SendFaxApp.Model
             faxDoc.Sender.Name = faxSenderInfo.Name;
             faxDoc.Sender.Company = faxSenderInfo.CompanyName;
             faxDoc.Bodies = faxDocInfo.Bodies.ToArray();
+
             faxDoc.Subject = faxSenderInfo.Subject;
             faxDoc.DocumentName = faxDocInfo.DocumentName;
             faxDoc.Recipients.Add(faxRecipientsInfo.bstrFaxNumber, faxRecipientsInfo.bstrRecipientName);
