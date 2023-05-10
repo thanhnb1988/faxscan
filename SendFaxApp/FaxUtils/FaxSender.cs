@@ -99,7 +99,7 @@ namespace SendFaxApp.Model
             faxDoc.Priority = FAX_PRIORITY_TYPE_ENUM.fptHIGH;
             faxDoc.ReceiptType = FAX_RECEIPT_TYPE_ENUM.frtNONE;
             faxDoc.AttachFaxToReceipt = true;
-
+           
             faxDoc.Sender.Name = faxSenderInfo.Name;
             faxDoc.Sender.Company = faxSenderInfo.CompanyName;
             faxDoc.Body = faxDocInfo.Body;
@@ -133,7 +133,7 @@ namespace SendFaxApp.Model
 
             faxDoc.Sender.Name = faxSenderInfo.Name;
             faxDoc.Sender.Company = faxSenderInfo.CompanyName;
-            faxDoc.Bodies = faxDocInfo.Body;
+            faxDoc.Bodies = faxDocInfo.Body.ToArray();
             faxDoc.Subject = faxSenderInfo.Subject;
             faxDoc.DocumentName = faxDocInfo.DocumentName;
             faxDoc.Recipients.Add(faxRecipientsInfo.bstrFaxNumber, faxRecipientsInfo.bstrRecipientName);

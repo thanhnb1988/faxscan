@@ -302,6 +302,7 @@ namespace SendFaxApp
             FaxDocInfo faxDocInfo = new FaxDocInfo();
             faxDocInfo.DocumentName = txtDocumentName.Text;
             faxDocInfo.Body = fileFaxTest;
+           
 
 
 
