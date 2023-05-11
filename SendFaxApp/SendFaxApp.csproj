@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <PackageReference Include="Mindbox.Data.Linq" Version="10.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
   </ItemGroup>
 
@@ -31,10 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="FaxLinQ.designer.cs">
+    <Compile Update="FaxDBLinQ.designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>FaxLinQ.dbml</DependentUpon>
+      <DependentUpon>FaxDBLinQ.dbml</DependentUpon>
     </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -47,14 +49,18 @@
     <None Update="Database\FaxConfigDB.mdf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Update="FaxLinQ.dbml">
+    <None Update="FaxDBLinQ.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>FaxLinQ.designer.cs</LastGenOutput>
+      <LastGenOutput>FaxDBLinQ.designer.cs</LastGenOutput>
     </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Utils\Api\" />
   </ItemGroup>
 
 </Project>

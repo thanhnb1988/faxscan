@@ -9,16 +9,20 @@ using Microsoft.VisualBasic;
 using WebSocketSharp;
 using System.Diagnostics;
 using System.Security;
-using FAXCOMEXLib;
 using System.Collections;
 using SendFaxApp.Model.Fax;
+using SendFaxApp.Utils.FaxUtils;
+using SendFaxApp.Services;
+using SendFaxApp.Model.LinQ;
+using SendFaxApp.Model.MDO;
 
 namespace SendFaxApp
 {
     public partial class Form1 : Form
     {
 
-        FaxLinQDataContext context = new FaxLinQDataContext();
+        DbFaxContext context = new DbFaxContext(System.Configuration.ConfigurationManager.
+    ConnectionStrings["SendFaxApp.Properties.Settings.FaxConfigDBConnectionString"].ConnectionString);
 
         private WebSocket client;
 
@@ -48,13 +52,26 @@ namespace SendFaxApp
             var config = GetDefaultFaxConfig();
             if (config != null)
             {
-                txtIP.Text = config.IP;
+
                 txtHostName.Text = config.HostName;
                 txtSenderName.Text = config.SenderName;
                 txtSenderCompany.Text = config.CompanyName;
-                txtWebSocketUrl.Text = config.WebSocketUrl;
                 lblFolderSelected.Text = config.FileSaveUrl;
 
+            }
+            else
+            {
+                txtHostName.Text = Environment.MachineName;
+            }
+            var authen = GetDefaultMDOAuthen();
+            if (authen != null)
+            {
+                txtApiUrl.Text = authen.ApiUrl;
+                txtDomainHeader.Text = authen.Domain;
+                txtClientID.Text = authen.ClientId;
+                txtClientSecret.Text = authen.ClientSecret;
+                txtWebSocketUrl.Text = authen.WebSocketUrl;
+                txtPhoneSocketChanel.Text = authen.WebSocketChanel;
             }
         }
 
@@ -62,6 +79,12 @@ namespace SendFaxApp
         {
             var faxConfig = context.FaxConfigs.FirstOrDefault();
             return faxConfig;
+        }
+
+        private AuthenMdo? GetDefaultMDOAuthen()
+        {
+            var authen = context.AuthenMdos.FirstOrDefault();
+            return authen;
         }
 
 
@@ -81,10 +104,11 @@ namespace SendFaxApp
 
             }
 
-            config.IP = txtIP.Text;
             config.HostName = txtHostName.Text;
             config.SenderName = txtSenderName.Text;
             config.CompanyName = txtSenderCompany.Text;
+
+            config.FileSaveUrl = lblFolderSelected.Text;
 
             if (isInsert)
             {
@@ -104,13 +128,13 @@ namespace SendFaxApp
             {
                 clearValidate();
 
-                validateIPFax();
-
                 validateHostName();
 
                 validateSenderName();
 
                 validateCompanyName();
+
+                validateSelectedFolder();
 
                 return true;
             }
@@ -123,16 +147,6 @@ namespace SendFaxApp
         private void clearValidate()
         {
             errorProviders.Clear();
-        }
-
-        private void validateIPFax()
-        {
-            if (txtIP.Text == string.Empty)
-            {
-                errorProviders.SetError(txtIP, "Must input the IP fax");
-
-                throw new Exception();
-            }
         }
 
         private void validateHostName()
@@ -165,45 +179,58 @@ namespace SendFaxApp
             }
         }
 
-        private void btnConfigWebSocket_Click(object sender, EventArgs e)
+        private void btnLogin_Click(object sender, EventArgs e)
         {
-            bool isValidate = validateSettings();
+            bool isValidate = validateLoginSettings();
             if (!isValidate)
             {
                 return;
             }
-            var config = GetDefaultFaxConfig();
+            var authen = GetDefaultMDOAuthen();
             bool isInsert = false;
-            if (config == null)
+            if (authen == null)
             {
-                config = new FaxConfig();
+                authen = new AuthenMdo();
                 isInsert = true;
 
             }
-            onConnectWebSocket();
+            authen.Domain = txtDomainHeader.Text.Trim();
+            authen.ClientSecret = txtClientSecret.Text.Trim();
+            authen.ClientId = txtClientID.Text.Trim();
+            authen.ApiUrl = txtApiUrl.Text.Trim();
 
-            config.WebSocketUrl = txtWebSocketUrl.Text;
-            config.FileSaveUrl = lblFolderSelected.Text;
+            var authenApiResponse = GetMDOAuthenToken(authen.ApiUrl, authen.Domain, authen.ClientId, authen.ClientSecret);
+            if (authenApiResponse != null)
+            {
+                authen.Token = authenApiResponse.Data.Token;
+                authen.TokenTimeout = authenApiResponse.Data.TokenTimeout.ToString();
+                authen.TokentExpiredAt = authenApiResponse.Data.TokenExpiredAt.ToString();
+            }
 
             if (isInsert)
             {
-                context.FaxConfigs.InsertOnSubmit(config);
+                context.AuthenMdos.InsertOnSubmit(authen);
             }
             context.SubmitChanges();
 
             clearOpenFileSendFaxTest();
 
-            MessageBox.Show("Update Settings Successfully");
+            MessageBox.Show("Update Authen Settings Successfully");
         }
 
-        private bool validateSettings()
+        private bool validateLoginSettings()
         {
             try
             {
                 clearValidate();
 
-                validateWebSocketUrl();
-                validateSelectedFolder();
+                validateApiUrl();
+
+                validateDomainHeader();
+
+                validateClientID();
+
+                validateClientSecret();
 
                 return true;
             }
@@ -213,11 +240,41 @@ namespace SendFaxApp
             }
         }
 
-        private void validateWebSocketUrl()
+        private void validateApiUrl()
         {
-            if (txtWebSocketUrl.Text == string.Empty)
+            if (txtApiUrl.Text == string.Empty)
             {
-                errorProviders.SetError(txtWebSocketUrl, "Must input the web socket url");
+                errorProviders.SetError(txtApiUrl, "Must input API url");
+
+                throw new Exception();
+            }
+        }
+
+        private void validateDomainHeader()
+        {
+            if (txtDomainHeader.Text == string.Empty)
+            {
+                errorProviders.SetError(txtDomainHeader, "Must input Domain Header");
+
+                throw new Exception();
+            }
+        }
+
+        private void validateClientID()
+        {
+            if (txtClientID.Text == string.Empty)
+            {
+                errorProviders.SetError(txtClientID, "Must input Client ID");
+
+                throw new Exception();
+            }
+        }
+
+        private void validateClientSecret()
+        {
+            if (txtClientSecret.Text == string.Empty)
+            {
+                errorProviders.SetError(txtClientID, "Must input Client Secret");
 
                 throw new Exception();
             }
@@ -231,6 +288,12 @@ namespace SendFaxApp
 
                 throw new Exception();
             }
+        }
+
+        private LoginRespone GetMDOAuthenToken(string baseUrl, string domain, string clientID, string Secret)
+        {
+            AuthenService service = new AuthenService(baseUrl, domain);
+            return service.login(new Model.MDO.LoginRequest() { ClientId = clientID, ClientSecret = Secret }).Result;
         }
 
 
@@ -292,39 +355,29 @@ namespace SendFaxApp
 
 
 
-            var config = GetDefaultFaxConfig();
-            Model.FaxSender faxSender = new Model.FaxSender(config.HostName);
+            //var authen = GetDefaultFaxConfig();
+            //FaxSenderHelper faxSender = new FaxSenderHelper(authen.HostName);
 
-            FaxSenderInfo faxSenderInfo = new FaxSenderInfo();
-            faxSenderInfo.Name = config.SenderName;
-            faxSenderInfo.CompanyName = config.CompanyName;
-            faxSenderInfo.Subject = txtDocumentSubject.Text;
+            //FaxSenderInfo faxSenderInfo = new FaxSenderInfo();
+            //faxSenderInfo.Name = authen.SenderName;
+            //faxSenderInfo.CompanyName = authen.CompanyName;
+            //faxSenderInfo.Subject = txtDocumentSubject.Text;
 
-            FaxDocInfo faxDocInfo = new FaxDocInfo();
-            faxDocInfo.DocumentName = txtDocumentName.Text;
-          
-            faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST.pdf");
-            faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST_2.pdf");
+            //FaxDocInfo faxDocInfo = new FaxDocInfo();
+            //faxDocInfo.DocumentName = txtDocumentName.Text;
 
-            FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
-            faxRecipientsInfo.listFaxRecipientsItem = new List<FaxRecipientsItem>();
-            faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = txtFaxNumber.Text, Name =txtReiverName.Text });
-            faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number="2222",Name=""});
-            clearOpenFileSendFaxTest();
-            faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
+            //faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST.pdf");
+            //faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST_2.pdf");
+
+            //FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
+            //faxRecipientsInfo.listFaxRecipientsItem = new List<FaxRecipientsItem>();
+            //faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = txtFaxNumber.Text, Name = txtReiverName.Text });
+            //faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = "2222", Name = "" });
+            //clearOpenFileSendFaxTest();
+            //faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
 
 
         }
-
-        private void btnBrowserFolder_Click(object sender, EventArgs e)
-        {
-            if (foldersavefileDigalog.ShowDialog() == DialogResult.OK)
-            {
-                lblFolderSelected.Text = foldersavefileDigalog.SelectedPath;
-
-            }
-        }
-
 
         /**
          * Run task in back ground with timespam
@@ -341,11 +394,12 @@ namespace SendFaxApp
 
         private void btnWebSocketConnect_Click(object sender, EventArgs e)
         {
-            if (client.IsAlive)
-            {
-                client.Close();
-            }
-            client.Connect();
+            //if (client.IsAlive)
+            //{
+            //    client.Close();
+            //}
+            //client.Connect();
+
         }
 
         private void btnOpenFileToSendFax_Click(object sender, EventArgs e)
@@ -363,6 +417,87 @@ namespace SendFaxApp
                     $"Details:\n\n{ex.StackTrace}");
                 }
             }
+
+        }
+
+        private void btnBrowserFolder_Click_1(object sender, EventArgs e)
+        {
+            if (foldersavefileDigalog.ShowDialog() == DialogResult.OK)
+            {
+                lblFolderSelected.Text = foldersavefileDigalog.SelectedPath;
+
+            }
+        }
+
+        private void bntConfigWebSocket_Click(object sender, EventArgs e)
+        {
+            bool isValidate = validateWebSocketForms();
+            if (!isValidate)
+            {
+                return;
+            }
+            var authen = GetDefaultMDOAuthen();
+            bool isInsert = false;
+            if (authen == null)
+            {
+                authen = new AuthenMdo();
+                isInsert = true;
+
+            }
+            authen.WebSocketUrl = txtWebSocketUrl.Text.Trim();
+            authen.WebSocketChanel = txtPhoneSocketChanel.Text.Trim();
+
+            if (isInsert)
+            {
+                context.AuthenMdos.InsertOnSubmit(authen);
+            }
+            context.SubmitChanges();
+
+            clearOpenFileSendFaxTest();
+
+            MessageBox.Show("Update Web Socket Successfully");
+        }
+
+        private bool validateWebSocketForms()
+        {
+            try
+            {
+                clearValidate();
+
+                validateWebSocketUrl();
+
+                validatePhoneChanelWebSocket();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        private void validateWebSocketUrl()
+        {
+            if (txtWebSocketUrl.Text == string.Empty)
+            {
+                errorProviders.SetError(txtWebSocketUrl, "Must input WebSocket url");
+
+                throw new Exception();
+            }
+        }
+
+        private void validatePhoneChanelWebSocket()
+        {
+            if (txtWebSocketUrl.Text == string.Empty)
+            {
+                errorProviders.SetError(txtWebSocketUrl, "Must input Phone Chanel Web socket");
+
+                throw new Exception();
+            }
+        }
+
+        private void btnRegisterChanel_Click(object sender, EventArgs e)
+        {
 
         }
     }
