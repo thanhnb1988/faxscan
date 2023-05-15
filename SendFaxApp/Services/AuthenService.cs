@@ -28,7 +28,7 @@ namespace SendFaxApp.Services
             var request = new HttpRequestMessage(HttpMethod.Post, "https://service-poc.bssd.vn/api/common/limitless/public/auth/login/external-api");
             request.Headers.Add("Accept-Language", "vi");
             request.Headers.Add("domain", "poc.bssd.vn");
-            var content = new StringContent("{\n    \"clientId\": \"ccde6cd5-ee8e-4c70-b2f5-4f06f685795f\",\n    \"clientSecret\": \"Pi8^UZ*kHldZ7Jlc@=WkZ7xKc2*f2dVrIZ1K\"\n}", null, "application/json");
+            var content = new StringContent("{\n    \"clientId\": \""+loginRequest.ClientId+"\",\n    \"clientSecret\": \""+loginRequest.ClientSecret+"\"\n}", null, "application/json");
             request.Content = content;
             var response =  client.SendAsync(request).Result;
             if (response.IsSuccessStatusCode)

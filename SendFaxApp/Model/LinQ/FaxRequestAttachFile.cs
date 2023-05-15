@@ -24,5 +24,7 @@ namespace SendFaxApp.Model.LinQ
         public int Status { get; set; }
         [Column]
         public long FaxRequestId { get; set; }
+
+        public FaxRequest FaxRequest { get; set; }
     }
 }

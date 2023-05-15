@@ -19,6 +19,8 @@ using Quobject.SocketIoClientDotNet.Client;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using System.Collections.Immutable;
+using Newtonsoft.Json;
+using System.Transactions;
 
 namespace SendFaxApp
 {
@@ -35,10 +37,9 @@ namespace SendFaxApp
             InitializeComponent();
             initDataConifg();
             clearOpenFileSendFaxTest();
-
             lblInfoTest.Text = Environment.MachineName;
 
-
+            RunInBackground(TimeSpan.FromSeconds(15), DownloadFileAysn);
         }
 
         private void clearOpenFileSendFaxTest()
@@ -51,7 +52,6 @@ namespace SendFaxApp
             var config = GetDefaultFaxConfig();
             if (config != null)
             {
-
                 txtHostName.Text = config.HostName;
                 txtSenderName.Text = config.SenderName;
                 txtSenderCompany.Text = config.CompanyName;
@@ -86,7 +86,6 @@ namespace SendFaxApp
             return authen;
         }
 
-
         private void btnTestFAX_Click(object sender, EventArgs e)
         {
             bool isValidate = validateFaxClick();
@@ -106,7 +105,6 @@ namespace SendFaxApp
             config.HostName = txtHostName.Text;
             config.SenderName = txtSenderName.Text;
             config.CompanyName = txtSenderCompany.Text;
-
             config.FileSaveUrl = lblFolderSelected.Text;
 
             if (isInsert)
@@ -114,11 +112,9 @@ namespace SendFaxApp
                 context.FaxConfigs.InsertOnSubmit(config);
             }
             context.SubmitChanges();
-
             clearOpenFileSendFaxTest();
 
             MessageBox.Show("Update Fax Config Successfully");
-
         }
 
         private bool validateFaxClick()
@@ -141,7 +137,6 @@ namespace SendFaxApp
             {
                 return false;
             }
-
         }
         private void clearValidate()
         {
@@ -191,7 +186,6 @@ namespace SendFaxApp
             {
                 authen = new AuthenMdo();
                 isInsert = true;
-
             }
             authen.Domain = txtDomainHeader.Text.Trim();
             authen.ClientSecret = txtClientSecret.Text.Trim();
@@ -302,9 +296,6 @@ namespace SendFaxApp
                 MessageBox.Show("Choose file to send fax");
                 return;
             }
-
-
-
             //var authen = GetDefaultFaxConfig();
             //FaxSenderHelper faxSender = new FaxSenderHelper(authen.HostName);
 
@@ -325,27 +316,6 @@ namespace SendFaxApp
             //faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = "2222", Name = "" });
             //clearOpenFileSendFaxTest();
             //faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
-
-
-        }
-
-        /**
-         * Run task in back ground with timespam
-         * 
-         * */
-        async Task RunInBackground(TimeSpan timeSpan, Action action)
-        {
-            var periodicTimer = new PeriodicTimer(timeSpan);
-            while (await periodicTimer.WaitForNextTickAsync())
-            {
-                action();
-            }
-        }
-
-        private void btnWebSocketConnect_Click(object sender, EventArgs e)
-        {
-
-
         }
 
         private void btnOpenFileToSendFax_Click(object sender, EventArgs e)
@@ -355,7 +325,6 @@ namespace SendFaxApp
                 try
                 {
                     fileFaxTest = openFileToSendFax.FileName;
-
                 }
                 catch (SecurityException ex)
                 {
@@ -363,7 +332,6 @@ namespace SendFaxApp
                     $"Details:\n\n{ex.StackTrace}");
                 }
             }
-
         }
 
         private void btnBrowserFolder_Click_1(object sender, EventArgs e)
@@ -371,7 +339,6 @@ namespace SendFaxApp
             if (foldersavefileDigalog.ShowDialog() == DialogResult.OK)
             {
                 lblFolderSelected.Text = foldersavefileDigalog.SelectedPath;
-
             }
         }
 
@@ -437,7 +404,6 @@ namespace SendFaxApp
             if (txtWebSocketUrl.Text == string.Empty)
             {
                 errorProviders.SetError(txtWebSocketUrl, "Must input Phone Chanel Web socket");
-
                 throw new Exception();
             }
         }
@@ -445,11 +411,7 @@ namespace SendFaxApp
         private void btnRegisterChanel_Click(object sender, EventArgs e)
         {
             var authen = GetDefaultMDOAuthen();
-            if (authen == null
-                || String.IsNullOrEmpty(authen.WebSocketUrl)
-                || String.IsNullOrEmpty(authen.Domain)
-                || String.IsNullOrEmpty(authen.Token)
-                )
+            if (IsAuthenInValid(authen))
             {
                 MessageBox.Show("Not login or config authen");
                 return;
@@ -466,24 +428,28 @@ namespace SendFaxApp
             }
         }
 
+        private bool IsAuthenInValid(AuthenMdo? authen)
+        {
+            return ( authen == null
+                || String.IsNullOrEmpty(authen.WebSocketUrl)
+                || String.IsNullOrEmpty(authen.Domain)
+                || String.IsNullOrEmpty(authen.Token));
+        }
+
         private void btnConnectSocket_Click(object sender, EventArgs e)
         {
             var authen = GetDefaultMDOAuthen();
-            if (authen == null
-                || String.IsNullOrEmpty(authen.WebSocketUrl)
-                || String.IsNullOrEmpty(authen.Domain)
-                || String.IsNullOrEmpty(authen.Token)
-                )
+            if (IsAuthenInValid(authen))
             {
                 MessageBox.Show("Not login or config authen");
                 return;
             }
-            onConnectWebSocket(authen.WebSocketUrl, authen.Token,authen.WebSocketChanel);
-          
+            onConnectWebSocket(authen.WebSocketUrl, authen.Token, authen.WebSocketChanel);
+            MessageBox.Show("Web socket connect successfully");
 
         }
 
-        private bool onConnectWebSocket(string host, String token,String chanel)
+        private bool onConnectWebSocket(string host, String token, String chanel)
         {
             Socket socket;
             int i = 0;
@@ -498,42 +464,36 @@ namespace SendFaxApp
                         { "token", token },
                     },
                     Reconnection = true,
-                    AutoConnect=true,
-                   // Transports = Quobject.Collections.Immutable.ImmutableList.Create(new string[] { WebSocket.NAME,Polling.NAME }),
+                    AutoConnect = true,
 
                 };
 
                 socket = IO.Socket(host, options);
-               
                 socket.On(Socket.EVENT_CONNECT, () =>
                 {
                     MessageBox.Show("Web Socket Connect success full");
-                    this.Invoke(new MethodInvoker(delegate () {
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
                         lblSockeStatus.Text = " WebSocket Connect: ";
                     }));
 
                 });
                 socket.On(Socket.EVENT_DISCONNECT, (data) =>
                 {
-                    MessageBox.Show(data.ToString()+":hello");
-                    this.Invoke(new MethodInvoker(delegate () {
+                    MessageBox.Show(data.ToString() + ":hello");
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
                         lblSockeStatus.Text = " WebSocket DisConnect: ";
                     }));
 
                 });
-                //socket.On(Socket.EVENT_CONNECT_ERROR, (data) =>
-                //{
-                //    MessageBox.Show(data.ToString());
-                //});
-                //socket.On(Socket.EVENT_ERROR, (data) =>
-                //{
-
-                //});
                 socket.On(chanel, (data) =>
                 {
-                    this.Invoke(new MethodInvoker(delegate () {
-                        lblSockeStatus.Text = " Number of data: "+(i++);
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
+                        lblSockeStatus.Text = " Number of data: " + (i++);
                     }));
+                    parseFaxRequestData(data.ToString());
                 });
                 socket.Connect();
 
@@ -543,7 +503,93 @@ namespace SendFaxApp
             {
                 return false;
             }
+        }
 
+        private void parseFaxRequestData(string data)
+        {
+            var jsonFax = JsonConvert.DeserializeObject<FaxData>(data);
+            var isExistRequest = context.FaxRequests.Any(c => c.RequestId.Equals(jsonFax.Id));
+            if (isExistRequest)
+            {
+                return;
+            }
+
+            using (var transaction = new TransactionScope())
+            {
+               
+                var faxRequest = new FaxRequest();
+                faxRequest.RequestId = jsonFax.Id;
+                faxRequest.Subject = jsonFax.Subject;
+                faxRequest.Domain = jsonFax.Domain;
+                faxRequest.Address = string.Join(",", jsonFax.Address);
+                faxRequest.Status = (int)FaxStatusDef.Pending;
+
+                context.FaxRequests.InsertOnSubmit(faxRequest);
+                context.SubmitChanges();
+                if (jsonFax.AttachFiles != null && jsonFax.AttachFiles.Any())
+                {
+                    List<FaxRequestAttachFile> listFile = new List<FaxRequestAttachFile>();
+                    foreach (var item in jsonFax.AttachFiles)
+                    {
+                        FaxRequestAttachFile fileAttach = new FaxRequestAttachFile();
+                        fileAttach.Domain = item.Domain;
+                        fileAttach.FileName = item.FileName;
+                        fileAttach.FilePath = item.FilePath;
+                        fileAttach.FaxRequestId = faxRequest.Id;
+                        fileAttach.Storage = item.Storage;
+                        fileAttach.Status = (int)FaxStatusDef.Pending;
+                        listFile.Add(fileAttach);
+                    }
+                    context.FaxRequestAttachFiles.InsertAllOnSubmit(listFile);
+                    context.SubmitChanges();
+                    transaction.Complete();
+                }
+            }
+        }
+
+
+        /**
+         * Run task in back ground with timespam
+         * 
+         * */
+        async Task RunInBackground(TimeSpan timeSpan, Action action)
+        {
+            var periodicTimer = new PeriodicTimer(timeSpan);
+            while (await periodicTimer.WaitForNextTickAsync())
+            {
+                action();
+            }
+        }
+
+        private void DownloadFileAysn()
+        {
+            var authen = GetDefaultMDOAuthen();
+            if (IsAuthenInValid(authen))
+            {
+                MessageBox.Show("Not login or config authen");
+                return;
+            }
+
+            var config = GetDefaultFaxConfig();
+            if (config != null && !String.IsNullOrEmpty(config.FileSaveUrl)){
+                var faxRequest = context.FaxRequests.Where(c => c.Status == (int)FaxStatusDef.Pending).FirstOrDefault();
+                if (faxRequest != null)
+                {
+                    var fileDownloads = context.FaxRequestAttachFiles.Where(c => c.FaxRequestId == faxRequest.Id).ToList();
+                    DownloadServicecs downloadServicecs = new DownloadServicecs(authen.ApiUrl, authen.Domain);
+                    downloadServicecs.Token = authen.Token;
+                    foreach (var item in fileDownloads)
+                    {
+                        var file = downloadServicecs.download(item.Storage, item.FilePath, item.FileName);
+                        FileService fileService = new FileService();
+                        fileService.saveFile(config.FileSaveUrl, String.Format("{0}_{1}", faxRequest.Id, item.FileName), file);
+                        item.Status = (int)FaxStatusDef.Downloading;
+                    }
+                    faxRequest.Status = (int)FaxStatusDef.Downloading;
+                    context.SubmitChanges();
+                }
+            }
+            
         }
     }
 }
