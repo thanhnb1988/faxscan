@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[13.0.3, )"
             },
+            "SocketIoClientDotNet": {
+              "target": "Package",
+              "version": "[0.9.13, )"
+            },
             "System.Net.Http": {
               "target": "Package",
               "version": "[4.3.4, )"

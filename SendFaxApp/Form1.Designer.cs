@@ -56,6 +56,8 @@
             btnLogin = new Button();
             label5 = new Label();
             tabPage4 = new TabPage();
+            lblSockeStatus = new Label();
+            btnConnectSocket = new Button();
             btnRegisterChanel = new Button();
             bntConfigWebSocket = new Button();
             txtPhoneSocketChanel = new TextBox();
@@ -356,6 +358,8 @@
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(lblSockeStatus);
+            tabPage4.Controls.Add(btnConnectSocket);
             tabPage4.Controls.Add(btnRegisterChanel);
             tabPage4.Controls.Add(bntConfigWebSocket);
             tabPage4.Controls.Add(txtPhoneSocketChanel);
@@ -371,13 +375,34 @@
             tabPage4.Text = "WebSocket Settings";
             tabPage4.UseVisualStyleBackColor = true;
             // 
+            // lblSockeStatus
+            // 
+            lblSockeStatus.AutoSize = true;
+            lblSockeStatus.Location = new Point(208, 69);
+            lblSockeStatus.Name = "lblSockeStatus";
+            lblSockeStatus.Size = new Size(111, 15);
+            lblSockeStatus.TabIndex = 26;
+            lblSockeStatus.Text = "lblWebSocketStatus";
+            // 
+            // btnConnectSocket
+            // 
+            btnConnectSocket.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            btnConnectSocket.ForeColor = Color.FromArgb(0, 0, 192);
+            btnConnectSocket.Location = new Point(467, 141);
+            btnConnectSocket.Name = "btnConnectSocket";
+            btnConnectSocket.Size = new Size(127, 21);
+            btnConnectSocket.TabIndex = 25;
+            btnConnectSocket.Text = "CONNECT SOCKET";
+            btnConnectSocket.UseVisualStyleBackColor = true;
+            btnConnectSocket.Click += btnConnectSocket_Click;
+            // 
             // btnRegisterChanel
             // 
             btnRegisterChanel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             btnRegisterChanel.ForeColor = Color.FromArgb(0, 0, 192);
             btnRegisterChanel.Location = new Point(334, 141);
             btnRegisterChanel.Name = "btnRegisterChanel";
-            btnRegisterChanel.Size = new Size(140, 21);
+            btnRegisterChanel.Size = new Size(127, 21);
             btnRegisterChanel.TabIndex = 24;
             btnRegisterChanel.Text = "REGISTER CHANEL";
             btnRegisterChanel.UseVisualStyleBackColor = true;
@@ -642,5 +667,8 @@
         private Button bntConfigWebSocket;
         private TextBox txtPhoneSocketChanel;
         private Label label16;
+        private Button btnConnectSocket;
+        private Label lblWebSocketStatus;
+        private Label lblSockeStatus;
     }
 }

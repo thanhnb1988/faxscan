@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
-using WebSocketSharp;
 using System.Diagnostics;
 using System.Security;
 using System.Collections;
@@ -15,6 +14,11 @@ using SendFaxApp.Utils.FaxUtils;
 using SendFaxApp.Services;
 using SendFaxApp.Model.LinQ;
 using SendFaxApp.Model.MDO;
+using Microsoft.IdentityModel.Tokens;
+using Quobject.SocketIoClientDotNet.Client;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Quobject.EngineIoClientDotNet.Client.Transports;
+using System.Collections.Immutable;
 
 namespace SendFaxApp
 {
@@ -24,17 +28,12 @@ namespace SendFaxApp
         DbFaxContext context = new DbFaxContext(System.Configuration.ConfigurationManager.
     ConnectionStrings["SendFaxApp.Properties.Settings.FaxConfigDBConnectionString"].ConnectionString);
 
-        private WebSocket client;
-
         private String fileFaxTest = "";
-
-        const string host = "ws://ablaze-sophisticated-sound.glitch.me";
 
         public Form1()
         {
             InitializeComponent();
             initDataConifg();
-            onConnectWebSocket();
             clearOpenFileSendFaxTest();
 
             lblInfoTest.Text = Environment.MachineName;
@@ -296,55 +295,6 @@ namespace SendFaxApp
             return service.login(new Model.MDO.LoginRequest() { ClientId = clientID, ClientSecret = Secret }).Result;
         }
 
-
-        private bool onConnectWebSocket()
-        {
-            bool isConnectSuccess = true;
-            try
-            {
-                client = new WebSocket(host);
-                client.OnOpen += (ss, ee) =>
-                {
-                    isConnectSuccess = true;
-                    onWebSocketOpen(ss, ee);
-                };
-                client.OnMessage += (ss, ee) =>
-                {
-                    isConnectSuccess = false;
-                    lblWebSocketSatus.Text = " Data: " + ee.Data;
-                };
-
-                client.OnError += (ss, ee) =>
-                {
-                    isConnectSuccess = false;
-                    lblWebSocketSatus.Text = " Error: " + ee.Message;
-                };
-
-                client.OnClose += (ss, ee) =>
-                {
-                    isConnectSuccess = false;
-                    lblWebSocketSatus.Text = (string.Format("Disconnected with {0}", host));
-                };
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-        }
-
-        private void onWebSocketOpen(object sender, EventArgs ee)
-        {
-            lblWebSocketSatus.Text = (string.Format("Connected to {0} successfully", host));
-        }
-
-        private void onWebSockeError()
-        {
-            lblWebSocketSatus.Text = (string.Format("Error  {0} successfully", host));
-        }
-
         private void btnSendFaxTest_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(fileFaxTest))
@@ -394,11 +344,7 @@ namespace SendFaxApp
 
         private void btnWebSocketConnect_Click(object sender, EventArgs e)
         {
-            //if (client.IsAlive)
-            //{
-            //    client.Close();
-            //}
-            //client.Connect();
+
 
         }
 
@@ -498,6 +444,105 @@ namespace SendFaxApp
 
         private void btnRegisterChanel_Click(object sender, EventArgs e)
         {
+            var authen = GetDefaultMDOAuthen();
+            if (authen == null
+                || String.IsNullOrEmpty(authen.WebSocketUrl)
+                || String.IsNullOrEmpty(authen.Domain)
+                || String.IsNullOrEmpty(authen.Token)
+                )
+            {
+                MessageBox.Show("Not login or config authen");
+                return;
+            }
+            WebSocketService serivce = new WebSocketService(authen.ApiUrl, authen.Domain);
+            var response = serivce.registerChanel(authen.WebSocketChanel, authen.Token);
+            if (response.Result.Status == 200)
+            {
+                MessageBox.Show("Register Channel Sucessfully");
+            }
+            else
+            {
+                MessageBox.Show("Error:" + response.Result.Message);
+            }
+        }
+
+        private void btnConnectSocket_Click(object sender, EventArgs e)
+        {
+            var authen = GetDefaultMDOAuthen();
+            if (authen == null
+                || String.IsNullOrEmpty(authen.WebSocketUrl)
+                || String.IsNullOrEmpty(authen.Domain)
+                || String.IsNullOrEmpty(authen.Token)
+                )
+            {
+                MessageBox.Show("Not login or config authen");
+                return;
+            }
+            onConnectWebSocket(authen.WebSocketUrl, authen.Token,authen.WebSocketChanel);
+          
+
+        }
+
+        private bool onConnectWebSocket(string host, String token,String chanel)
+        {
+            Socket socket;
+            int i = 0;
+            bool isConnectSuccess = true;
+            ServicePointManager.DefaultConnectionLimit = 100;
+            try
+            {
+                var options = new IO.Options
+                {
+                    Query = new Dictionary<string, string>
+                    {
+                        { "token", token },
+                    },
+                    Reconnection = true,
+                    AutoConnect=true,
+                   // Transports = Quobject.Collections.Immutable.ImmutableList.Create(new string[] { WebSocket.NAME,Polling.NAME }),
+
+                };
+
+                socket = IO.Socket(host, options);
+               
+                socket.On(Socket.EVENT_CONNECT, () =>
+                {
+                    MessageBox.Show("Web Socket Connect success full");
+                    this.Invoke(new MethodInvoker(delegate () {
+                        lblSockeStatus.Text = " WebSocket Connect: ";
+                    }));
+
+                });
+                socket.On(Socket.EVENT_DISCONNECT, (data) =>
+                {
+                    MessageBox.Show(data.ToString()+":hello");
+                    this.Invoke(new MethodInvoker(delegate () {
+                        lblSockeStatus.Text = " WebSocket DisConnect: ";
+                    }));
+
+                });
+                //socket.On(Socket.EVENT_CONNECT_ERROR, (data) =>
+                //{
+                //    MessageBox.Show(data.ToString());
+                //});
+                //socket.On(Socket.EVENT_ERROR, (data) =>
+                //{
+
+                //});
+                socket.On(chanel, (data) =>
+                {
+                    this.Invoke(new MethodInvoker(delegate () {
+                        lblSockeStatus.Text = " Number of data: "+(i++);
+                    }));
+                });
+                socket.Connect();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
 
         }
     }

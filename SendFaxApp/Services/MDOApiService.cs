@@ -11,7 +11,5 @@ namespace SendFaxApp.Services
     {
         protected string Baseurl { get; set; }
         protected string Domain { get; set; }
-
-
     }
 }

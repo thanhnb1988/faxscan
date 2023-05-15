@@ -12,6 +12,8 @@ namespace SendFaxApp.Model.LinQ
     {
         public Table<FaxConfig> FaxConfigs;
         public Table<AuthenMdo> AuthenMdos;
+        public Table<FaxRequest> FaxRequests;
+        public Table<FaxRequestAttachFile> FaxRequestAttachFiles;
         public DbFaxContext(string connection) : base(connection) { }
     }
 }

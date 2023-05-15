@@ -4,6 +4,7 @@ using SendFaxApp.Model.MDO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,30 +23,27 @@ namespace SendFaxApp.Services
 
         public async Task<WebSocketChanelResponse> registerChanel(string chanelRegister,string token )
         {
-            WebSocketChanelResponse response = new WebSocketChanelResponse();
+            WebSocketChanelResponse webSocketChanelResponse = new WebSocketChanelResponse();
 
-            var request = new HttpRequestMessage(HttpMethod.Put, String.Format("{0}/api/core/channel/private/register-fax-machine/{1}",Baseurl, chanelRegister));
-            
-            buildMDOApiHeader(request, token);
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Put,String.Format( "{0}/api/core/channel/private/register-fax-machine/{1}",Baseurl,chanelRegister));
+            request.Headers.Add("domain", Domain);
+            request.Headers.Add("Authorization", String.Format("Bearer {0}",token));
             var content = new StringContent("{\n    \n}", null, "application/json");
             request.Content = content;
-            var res = await client.SendAsync(request);
-          
-            if (res.IsSuccessStatusCode)
+            var response =  client.SendAsync(request).Result;
+
+
+            if (response.IsSuccessStatusCode)
             {
-                //Storing the response details recieved from web api
-                var result = res.Content.ReadAsStringAsync().Result;
 
-                response = JsonConvert.DeserializeObject<WebSocketChanelResponse>(result);
+                var result = response.Content.ReadAsStringAsync().Result;
+
+                webSocketChanelResponse = JsonConvert.DeserializeObject<WebSocketChanelResponse>(result);
             }
-            return response;
-        }
 
-        private void buildMDOApiHeader(HttpRequestMessage request,String token)
-        {
-            request.Headers.Add("Domain", Domain);
-            request.Headers.Add("Authorization", String.Format("Bearer {0}",token));
-            
+            return webSocketChanelResponse;
         }
     }
+    
 }

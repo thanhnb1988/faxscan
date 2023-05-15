@@ -10,6 +10,7 @@
         "dependencies": {
           "Mindbox.Data.Linq": "10.5.0",
           "Newtonsoft.Json": "13.0.3",
+          "SocketIoClientDotNet": "0.9.13",
           "System.Net.Http": "4.3.4",
           "WebSocketSharp-netstandard": "1.0.1"
         },
@@ -59,6 +60,18 @@
           "lib/net6.0/Castle.Core.dll": {
             "assemblyVersion": "5.0.0.0",
             "fileVersion": "5.1.1.0"
+          }
+        }
+      },
+      "EngineIoClientDotNet/0.9.22": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3",
+          "WebSocket4Net": "0.14.1"
+        },
+        "runtime": {
+          "lib/net45/EngineIoClientDotNet.dll": {
+            "assemblyVersion": "0.9.22.0",
+            "fileVersion": "0.9.22.0"
           }
         }
       },
@@ -327,6 +340,19 @@
       "runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
       "runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
       "runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
+      "SocketIoClientDotNet/0.9.13": {
+        "dependencies": {
+          "EngineIoClientDotNet": "0.9.22",
+          "Newtonsoft.Json": "13.0.3",
+          "WebSocket4Net": "0.14.1"
+        },
+        "runtime": {
+          "lib/net45/SocketIoClientDotNet.dll": {
+            "assemblyVersion": "0.9.13.0",
+            "fileVersion": "0.9.13.0"
+          }
+        }
+      },
       "System.Collections/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.1",
@@ -796,6 +822,14 @@
           }
         }
       },
+      "WebSocket4Net/0.14.1": {
+        "runtime": {
+          "lib/net45/WebSocket4Net.dll": {
+            "assemblyVersion": "0.14.1.0",
+            "fileVersion": "0.14.1.0"
+          }
+        }
+      },
       "WebSocketSharp-netstandard/1.0.1": {
         "runtime": {
           "lib/netstandard2.0/websocket-sharp.dll": {
@@ -832,6 +866,13 @@
       "sha512": "sha512-rpYtIczkzGpf+EkZgDr9CClTdemhsrwA/W5hMoPjLkRFnXzH44zDLoovXeKtmxb1ykXK9aJVODSpiJml8CTw2g==",
       "path": "castle.core/5.1.1",
       "hashPath": "castle.core.5.1.1.nupkg.sha512"
+    },
+    "EngineIoClientDotNet/0.9.22": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/dMIbPizLAzde4hr8uvHSCshKqq2zEH1lYQa83eHXRMiBGltyUKikvIdZCunDiwPL1EPxa5ngHwqd5NBQyn7eA==",
+      "path": "engineioclientdotnet/0.9.22",
+      "hashPath": "engineioclientdotnet.0.9.22.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
       "type": "package",
@@ -1070,6 +1111,13 @@
       "sha512": "sha512-leXiwfiIkW7Gmn7cgnNcdtNAU70SjmKW3jxGj1iKHOvdn0zRWsgv/l2OJUO5zdGdiv2VRFnAsxxhDgMzofPdWg==",
       "path": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl/4.3.2",
       "hashPath": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512"
+    },
+    "SocketIoClientDotNet/0.9.13": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0U1gOjIYNLLeEabCinglXOeY7QyVPMmvE6DRtHgwhq2H8zglPUXIpbbG74FmRVZhDA8ryATpArTeHcT/CP6xXA==",
+      "path": "socketioclientdotnet/0.9.13",
+      "hashPath": "socketioclientdotnet.0.9.13.nupkg.sha512"
     },
     "System.Collections/4.3.0": {
       "type": "package",
@@ -1441,6 +1489,13 @@
       "sha512": "sha512-bR4qdCmssMMbo9Fatci49An5B1UaVJZHKNq70PRgzoLYIlitb8Tj7ns/Xt5Pz1CkERiTjcVBDU2y1AVrPBYkaw==",
       "path": "system.windows.extensions/7.0.0",
       "hashPath": "system.windows.extensions.7.0.0.nupkg.sha512"
+    },
+    "WebSocket4Net/0.14.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-01v/KxbZ9hTY8kXPL9erpU9HPCvd++OifmU29OvgTKzBaSDfZRIFZB9mdTrRjMY/Q+7Llq0VINWPpazpYNbx4g==",
+      "path": "websocket4net/0.14.1",
+      "hashPath": "websocket4net.0.14.1.nupkg.sha512"
     },
     "WebSocketSharp-netstandard/1.0.1": {
       "type": "package",

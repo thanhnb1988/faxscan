@@ -56,3 +56,6 @@ C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\n
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.pdb
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.genruntimeconfig.cache
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\ref\SendFaxApp.dll
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\EngineIoClientDotNet.dll
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\SocketIoClientDotNet.dll
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\WebSocket4Net.dll
