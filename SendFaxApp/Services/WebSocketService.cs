@@ -21,9 +21,9 @@ namespace SendFaxApp.Services
             
         }
 
-        public async Task<WebSocketChanelResponse> registerChanel(string chanelRegister,string token )
+        public async Task<MDOBaseResponse> registerChanel(string chanelRegister,string token )
         {
-            WebSocketChanelResponse webSocketChanelResponse = new WebSocketChanelResponse();
+            MDOBaseResponse webSocketChanelResponse = new MDOBaseResponse();
 
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Put,String.Format( "{0}/api/core/channel/private/register-fax-machine/{1}",Baseurl,chanelRegister));
@@ -39,7 +39,7 @@ namespace SendFaxApp.Services
 
                 var result = response.Content.ReadAsStringAsync().Result;
 
-                webSocketChanelResponse = JsonConvert.DeserializeObject<WebSocketChanelResponse>(result);
+                webSocketChanelResponse = JsonConvert.DeserializeObject<MDOBaseResponse>(result);
             }
 
             return webSocketChanelResponse;

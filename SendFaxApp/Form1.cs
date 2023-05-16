@@ -40,6 +40,8 @@ namespace SendFaxApp
             lblInfoTest.Text = Environment.MachineName;
 
             RunInBackground(TimeSpan.FromSeconds(15), DownloadFileAysn);
+            RunInBackground(TimeSpan.FromMinutes(15), LoginAuthenAysn);
+            RunInBackground(TimeSpan.FromMinutes(5), SendFaxAysn);
         }
 
         private void clearOpenFileSendFaxTest()
@@ -296,26 +298,26 @@ namespace SendFaxApp
                 MessageBox.Show("Choose file to send fax");
                 return;
             }
-            //var authen = GetDefaultFaxConfig();
-            //FaxSenderHelper faxSender = new FaxSenderHelper(authen.HostName);
+            var authen = GetDefaultFaxConfig();
+            FaxSenderHelper faxSender = new FaxSenderHelper(authen.HostName);
 
-            //FaxSenderInfo faxSenderInfo = new FaxSenderInfo();
-            //faxSenderInfo.Name = authen.SenderName;
-            //faxSenderInfo.CompanyName = authen.CompanyName;
-            //faxSenderInfo.Subject = txtDocumentSubject.Text;
+            FaxSenderInfo faxSenderInfo = new FaxSenderInfo();
+            faxSenderInfo.Name = authen.SenderName;
+            faxSenderInfo.CompanyName = authen.CompanyName;
+            faxSenderInfo.Subject = txtDocumentSubject.Text;
 
-            //FaxDocInfo faxDocInfo = new FaxDocInfo();
-            //faxDocInfo.DocumentName = txtDocumentName.Text;
+            FaxDocInfo faxDocInfo = new FaxDocInfo();
+            faxDocInfo.DocumentName = txtDocumentName.Text;
 
-            //faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST.pdf");
-            //faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST_2.pdf");
+            faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST.pdf");
+            faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST_2.pdf");
 
-            //FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
-            //faxRecipientsInfo.listFaxRecipientsItem = new List<FaxRecipientsItem>();
-            //faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = txtFaxNumber.Text, Name = txtReiverName.Text });
-            //faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = "2222", Name = "" });
-            //clearOpenFileSendFaxTest();
-            //faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
+            FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
+            faxRecipientsInfo.listFaxRecipientsItem = new List<FaxRecipientsItem>();
+            faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = txtFaxNumber.Text, Name = txtReiverName.Text });
+            faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = "2222", Name = "" });
+            clearOpenFileSendFaxTest();
+            faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
         }
 
         private void btnOpenFileToSendFax_Click(object sender, EventArgs e)
@@ -430,7 +432,7 @@ namespace SendFaxApp
 
         private bool IsAuthenInValid(AuthenMdo? authen)
         {
-            return ( authen == null
+            return (authen == null
                 || String.IsNullOrEmpty(authen.WebSocketUrl)
                 || String.IsNullOrEmpty(authen.Domain)
                 || String.IsNullOrEmpty(authen.Token));
@@ -516,7 +518,7 @@ namespace SendFaxApp
 
             using (var transaction = new TransactionScope())
             {
-               
+
                 var faxRequest = new FaxRequest();
                 faxRequest.RequestId = jsonFax.Id;
                 faxRequest.Subject = jsonFax.Subject;
@@ -571,7 +573,8 @@ namespace SendFaxApp
             }
 
             var config = GetDefaultFaxConfig();
-            if (config != null && !String.IsNullOrEmpty(config.FileSaveUrl)){
+            if (config != null && !String.IsNullOrEmpty(config.FileSaveUrl))
+            {
                 var faxRequest = context.FaxRequests.Where(c => c.Status == (int)FaxStatusDef.Pending).FirstOrDefault();
                 if (faxRequest != null)
                 {
@@ -582,14 +585,79 @@ namespace SendFaxApp
                     {
                         var file = downloadServicecs.download(item.Storage, item.FilePath, item.FileName);
                         FileService fileService = new FileService();
-                        fileService.saveFile(config.FileSaveUrl, String.Format("{0}_{1}", faxRequest.Id, item.FileName), file);
+                        string realPath = String.Format("{0}_{1}", faxRequest.Id, item.FileName);
+                        fileService.saveFile(config.FileSaveUrl, realPath, file);
                         item.Status = (int)FaxStatusDef.Downloading;
+                        item.FaxRealPath = realPath;
                     }
                     faxRequest.Status = (int)FaxStatusDef.Downloading;
                     context.SubmitChanges();
                 }
             }
-            
+
+        }
+
+        private void LoginAuthenAysn()
+        {
+            var authen = GetDefaultMDOAuthen();
+            if (authen != null)
+            {
+                var authenApiResponse = GetMDOAuthenToken(authen.ApiUrl, authen.Domain, authen.ClientId, authen.ClientSecret);
+                if (authenApiResponse != null)
+                {
+                    authen.Token = authenApiResponse.Data.Token;
+                    authen.TokenTimeout = authenApiResponse.Data.TokenTimeout.ToString();
+                    authen.TokentExpiredAt = authenApiResponse.Data.TokenExpiredAt.ToString();
+                }
+            }
+            context.SubmitChanges();
+        }
+
+        private void SendFaxAysn()
+        {
+            var authen = GetDefaultMDOAuthen();
+
+            var faxConfig = GetDefaultFaxConfig();
+            var faxRequest = context.FaxRequests.Where(c => c.Status == (int)FaxStatusDef.Downloading).FirstOrDefault();
+            if (authen != null && faxConfig != null)
+            {
+                if (faxRequest != null)
+                {
+                    var fileDownloads = context.FaxRequestAttachFiles.Where(c => c.FaxRequestId == faxRequest.Id).ToList();
+
+                    FaxSenderHelper faxSender = new FaxSenderHelper(faxConfig.HostName);
+
+                    FaxSenderInfo faxSenderInfo = new FaxSenderInfo();
+                    faxSenderInfo.Name = faxConfig.SenderName;
+                    faxSenderInfo.CompanyName = faxConfig.CompanyName;
+                    faxSenderInfo.Subject = faxRequest.Subject;
+
+                    FaxDocInfo faxDocInfo = new FaxDocInfo();
+                    faxDocInfo.DocumentName = faxRequest.Subject;
+                    foreach (var item in fileDownloads)
+                    {
+                        faxDocInfo.Bodies.Add(item.FaxRealPath);
+
+                    }
+
+
+                    FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
+                    faxRecipientsInfo.listFaxRecipientsItem = new List<FaxRecipientsItem>();
+                    var listRecipients = faxRequest.Address.Split(',');
+                    foreach (var item in listRecipients)
+                    {
+                        faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = item });
+                    }
+                    clearOpenFileSendFaxTest();
+                    faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
+
+                    FaxSendStatusService faxSendStatusService = new FaxSendStatusService(authen.ApiUrl,authen.Token);
+                    faxSendStatusService.SendStatus(faxRequest.RequestId, authen.Token, listRecipients.ToList());
+
+
+                }
+            }
+
         }
     }
 }
