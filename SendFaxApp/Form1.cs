@@ -21,6 +21,7 @@ using Quobject.EngineIoClientDotNet.Client.Transports;
 using System.Collections.Immutable;
 using Newtonsoft.Json;
 using System.Transactions;
+using System.Drawing;
 
 namespace SendFaxApp
 {
@@ -483,6 +484,11 @@ namespace SendFaxApp
                 socket.On(Socket.EVENT_DISCONNECT, (data) =>
                 {
                     MessageBox.Show(data.ToString() + ":hello");
+                    if (data =="io server disconnect")
+                    {
+                        // the disconnection was initiated by the server, you need to reconnect manually
+                        socket.Connect();
+                    }
                     this.Invoke(new MethodInvoker(delegate ()
                     {
                         lblSockeStatus.Text = " WebSocket DisConnect: ";
