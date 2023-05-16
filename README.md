@@ -27,11 +27,17 @@ Prepare :install visual ,install .net 6.0,install adobe reader
 ![open visual studio](images/b4_runproject.png)
 
 
-# Set up development enviroment:
+# Deploy  enviroment:
 Prepare :MS SQL Local db,install .net 6.0,install adobe reader
 1. Install .net 6.0, install adobe reader
 2. Install MS SQL Local
-- Downloal sqldb local 2019 :https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb?view=sql-server-ver16
-![open visual studio](images/![open visual studio](images/b4_runproject.png))
+- Downloal sqldb local 2019 and install :https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb?view=sql-server-ver16
+![open visual studio](images/b5_sqllocaldownload.png))
+- Create sql local db instance by comand :
+```bash
+SqlLocalDB delete  MSSQLLocalDB
+SqlLocalDB create  MSSQLLocalDB
+SqlLocalDB start  MSSQLLocalDB
+```
 
 
