@@ -17,12 +17,16 @@ After install all development tools : you need to  set up development enviroment
 # Set up development enviroment:
 Prepare :install visual ,install .net 6.0,install adobe reader
 1. Git clone :https://github.com/thanhnb1988/faxscan.git
+
 2. Open project by using visual studio :
 ![open visual studio](images/b1_openvisual.png)
+
 3. Restore nuget package in project :
 ![open visual studio](images/b2_restore.png)
+
 3. Copy 2 file database FaxConfigDB.mdf and FaxConfigDB.ldf from Database folder  to other place then change connection string in AppConfig :
 ![open visual studio](images/b31_changeAppConfig.png)
+
 4. Run project :
 ![open visual studio](images/b4_runproject.png)
 
