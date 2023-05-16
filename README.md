@@ -17,3 +17,4 @@ After install all development tools : you need to  set up development enviroment
 # Set up development enviroment:
 1. Git clone :https://github.com/thanhnb1988/faxscan.git
 2. Open project by using visual studio :
+![open visual studio](b1_openvisual.png)
