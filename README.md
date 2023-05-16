@@ -15,6 +15,23 @@ You need to confirm few configurations, which can be found at https://www.codepr
 After install all development tools : you need to  set up development enviroment
 
 # Set up development enviroment:
+Prepare :install visual ,install .net 6.0,install adobe reader
 1. Git clone :https://github.com/thanhnb1988/faxscan.git
 2. Open project by using visual studio :
 ![open visual studio](images/b1_openvisual.png)
+3. Restore nuget package in project :
+![open visual studio](images/b2_restore.png)
+3. Copy 2 file database FaxConfigDB.mdf and FaxConfigDB.ldf from Database folder  to other place then change connection string in AppConfig :
+![open visual studio](images/b31_changeAppConfig.png)
+4. Run project :
+![open visual studio](images/b4_runproject.png)
+
+
+# Set up development enviroment:
+Prepare :MS SQL Local db,install .net 6.0,install adobe reader
+1. Install .net 6.0, install adobe reader
+2. Install MS SQL Local
+- Downloal sqldb local 2019 :https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb?view=sql-server-ver16
+![open visual studio](images/![open visual studio](images/b4_runproject.png))
+
+
