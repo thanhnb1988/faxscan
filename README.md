@@ -30,6 +30,7 @@ Prepare :install visual ,install .net 6.0,install adobe reader
 # Deploy  enviroment:
 Prepare :MS SQL Local db,install .net 6.0,install adobe reader
 1. Install .net 6.0, install adobe reader
+
 2. Install MS SQL Local
 - Downloal sqldb local 2019 and install :https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb?view=sql-server-ver16
 ![open visual studio](images/b5_sqllocaldownload.png)
@@ -42,10 +43,16 @@ SqlLocalDB start  MSSQLLocalDB
 ```
 3 .Instal Adobe Reader and make in default open PDF file
 ![open visual studio](images/b6_changeAdobeReader.png)
+
+
 3 .Copy 2 file database FaxConfigDB.mdf and FaxConfigDB.ldf from Database folder  to other place then change connection string in SendFaxApp.dll.config
 ![open visual studio](images/b6_changeAdobeReader.png)
+
+
 4 .Change connection string 
 ![open visual studio](images/b31_changeAppConfig.png)
+
+
 5. Run project 
 
 
