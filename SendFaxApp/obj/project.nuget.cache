@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "naUr8uQP7t6viikEyJGA65i7dQ3cSAN2239YfOIN+DLyGWYNSv4iRRLDDzmkAcxc07DOtzdRW77b33dFu2IyBg==",
+  "dgSpecHash": "OczSIeHjgldNl0ZWmLmjYT6l9NIddRXZzOYmXm98MWKpHDppB5SAjmXr6N7na9Xi/hGh5dW309sAG0RbCalg6A==",
   "success": true,
   "projectFilePath": "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SendFaxApp\\SendFaxApp.csproj",
   "expectedPackageFiles": [
@@ -42,6 +42,7 @@
     "C:\\Users\\ThaoPC\\.nuget\\packages\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
+    "C:\\Users\\ThaoPC\\.nuget\\packages\\socketioclient\\3.0.8\\socketioclient.3.0.8.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\socketioclientdotnet\\0.9.13\\socketioclientdotnet.0.9.13.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\system.collections.concurrent\\4.3.0\\system.collections.concurrent.4.3.0.nupkg.sha512",
@@ -90,14 +91,13 @@
     "C:\\Users\\ThaoPC\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\system.text.encoding.codepages\\6.0.0\\system.text.encoding.codepages.6.0.0.nupkg.sha512",
-    "C:\\Users\\ThaoPC\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
-    "C:\\Users\\ThaoPC\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
+    "C:\\Users\\ThaoPC\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
+    "C:\\Users\\ThaoPC\\.nuget\\packages\\system.text.json\\7.0.2\\system.text.json.7.0.2.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\system.windows.extensions\\7.0.0\\system.windows.extensions.7.0.0.nupkg.sha512",
-    "C:\\Users\\ThaoPC\\.nuget\\packages\\websocket4net\\0.14.1\\websocket4net.0.14.1.nupkg.sha512",
-    "C:\\Users\\ThaoPC\\.nuget\\packages\\websocketsharp-netstandard\\1.0.1\\websocketsharp-netstandard.1.0.1.nupkg.sha512"
+    "C:\\Users\\ThaoPC\\.nuget\\packages\\websocket4net\\0.14.1\\websocket4net.0.14.1.nupkg.sha512"
   ],
   "logs": [
     {

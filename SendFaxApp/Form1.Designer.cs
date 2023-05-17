@@ -378,6 +378,7 @@
             // lblSockeStatus
             // 
             lblSockeStatus.AutoSize = true;
+            lblSockeStatus.ForeColor = Color.Red;
             lblSockeStatus.Location = new Point(208, 69);
             lblSockeStatus.Name = "lblSockeStatus";
             lblSockeStatus.Size = new Size(111, 15);

@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[13.0.3, )"
             },
+            "SocketIOClient": {
+              "target": "Package",
+              "version": "[3.0.8, )"
+            },
             "SocketIoClientDotNet": {
               "target": "Package",
               "version": "[0.9.13, )"
@@ -55,10 +59,6 @@
             "System.Net.Http": {
               "target": "Package",
               "version": "[4.3.4, )"
-            },
-            "WebSocketSharp-netstandard": {
-              "target": "Package",
-              "version": "[1.0.1, )"
             }
           },
           "imports": [

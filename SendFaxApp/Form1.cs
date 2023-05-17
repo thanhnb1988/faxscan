@@ -22,6 +22,9 @@ using System.Collections.Immutable;
 using Newtonsoft.Json;
 using System.Transactions;
 using System.Drawing;
+using Microsoft.VisualBasic.Logging;
+using System.Net.WebSockets;
+
 
 namespace SendFaxApp
 {
@@ -41,7 +44,7 @@ namespace SendFaxApp
             lblInfoTest.Text = Environment.MachineName;
 
             RunInBackground(TimeSpan.FromSeconds(15), DownloadFileAysn);
-            RunInBackground(TimeSpan.FromMinutes(15), LoginAuthenAysn);
+            RunInBackground(TimeSpan.FromSeconds(30), LoginAuthenAysn);
             RunInBackground(TimeSpan.FromMinutes(5), SendFaxAysn);
         }
 
@@ -448,6 +451,7 @@ namespace SendFaxApp
                 return;
             }
             onConnectWebSocket(authen.WebSocketUrl, authen.Token, authen.WebSocketChanel);
+
             MessageBox.Show("Web socket connect successfully");
 
         }
@@ -457,7 +461,7 @@ namespace SendFaxApp
             Socket socket;
             int i = 0;
             bool isConnectSuccess = true;
-            ServicePointManager.DefaultConnectionLimit = 100;
+
             try
             {
                 var options = new IO.Options
@@ -468,33 +472,37 @@ namespace SendFaxApp
                     },
                     Reconnection = true,
                     AutoConnect = true,
+                    ReconnectionAttempts = 10,
+
+                    ReconnectionDelay = 600,
 
                 };
 
                 socket = IO.Socket(host, options);
                 socket.On(Socket.EVENT_CONNECT, () =>
                 {
-                    MessageBox.Show("Web Socket Connect success full");
                     this.Invoke(new MethodInvoker(delegate ()
                     {
                         lblSockeStatus.Text = " WebSocket Connect: ";
                     }));
 
                 });
+
                 socket.On(Socket.EVENT_DISCONNECT, (data) =>
                 {
-                    MessageBox.Show(data.ToString() + ":hello");
-                    if (data =="io server disconnect")
+                    if (data.ToString() == "io server disconnect")
                     {
-                        // the disconnection was initiated by the server, you need to reconnect manually
-                        socket.Connect();
+
+                        onConnectWebSocket(host, token, chanel);
                     }
+
                     this.Invoke(new MethodInvoker(delegate ()
                     {
-                        lblSockeStatus.Text = " WebSocket DisConnect: ";
+                        lblSockeStatus.Text = data.ToString();
                     }));
 
                 });
+
                 socket.On(chanel, (data) =>
                 {
                     this.Invoke(new MethodInvoker(delegate ()
@@ -503,6 +511,7 @@ namespace SendFaxApp
                     }));
                     parseFaxRequestData(data.ToString());
                 });
+
                 socket.Connect();
 
                 return true;
@@ -513,9 +522,16 @@ namespace SendFaxApp
             }
         }
 
+
+
         private void parseFaxRequestData(string data)
         {
-            var jsonFax = JsonConvert.DeserializeObject<FaxData>(data);
+            var jsonFax = tryToParseFaxDataObj(data);
+
+            if (jsonFax == null)
+            {
+                return;
+            }
             var isExistRequest = context.FaxRequests.Any(c => c.RequestId.Equals(jsonFax.Id));
             if (isExistRequest)
             {
@@ -554,6 +570,20 @@ namespace SendFaxApp
                 }
             }
         }
+
+        private FaxData tryToParseFaxDataObj(string data)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<FaxData>(data);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+
 
 
         /**
@@ -657,7 +687,7 @@ namespace SendFaxApp
                     clearOpenFileSendFaxTest();
                     faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
 
-                    FaxSendStatusService faxSendStatusService = new FaxSendStatusService(authen.ApiUrl,authen.Token);
+                    FaxSendStatusService faxSendStatusService = new FaxSendStatusService(authen.ApiUrl, authen.Token);
                     faxSendStatusService.SendStatus(faxRequest.RequestId, authen.Token, listRecipients.ToList());
 
 
