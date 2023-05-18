@@ -40,9 +40,21 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "dependencies": {
+            "FluentScheduler": {
+              "target": "Package",
+              "version": "[5.5.1, )"
+            },
             "Mindbox.Data.Linq": {
               "target": "Package",
               "version": "[10.5.0, )"
+            },
+            "NLog": {
+              "target": "Package",
+              "version": "[4.6.3, )"
+            },
+            "NLog.Config": {
+              "target": "Package",
+              "version": "[4.6.3, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",

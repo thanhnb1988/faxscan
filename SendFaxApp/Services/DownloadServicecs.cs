@@ -18,16 +18,16 @@ namespace SendFaxApp.Services
         }
         public string Token { get; set; }
 
-        public Stream download(string Storage,string FilePath, string FileName)
+        public  Stream download(string Storage,string FilePath, string FileName)
         {
             var client = new HttpClient();
             string dowwnLoadUrl = String.Format("{0}/api/core/file/private/download?storage={1}&filePath={2}&fileName={3}",Baseurl, Storage, FilePath, FileName);
             var request = new HttpRequestMessage(HttpMethod.Get, dowwnLoadUrl);
             request.Headers.Add("domain", Domain);
             request.Headers.Add("Authorization", String.Format("Bearer  {0}",Token));
-            var response =  client.SendAsync(request).Result;
+            var response =   client.SendAsync(request).Result;
            
-            return response.Content.ReadAsStreamAsync().Result;
+            return  response.Content.ReadAsStreamAsync().Result;
         }
     }
 }

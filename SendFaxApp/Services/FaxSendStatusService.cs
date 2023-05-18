@@ -21,21 +21,19 @@ namespace SendFaxApp.Services
         {
             MDOBaseResponse mdobaseResponse = new MDOBaseResponse();
 
-            var client = new HttpClient();
+           
             var url = String.Format("{0}/api/core/channel/private/update-address-sending-status/{1}", Baseurl, id);
              var pars = buildQueryString(address);
             if (pars != null)
             {
-                url = "?" + pars;
+                url += "?" + pars;
             }
-            var request = new HttpRequestMessage(HttpMethod.Put,url);
-
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Put, url);
             request.Headers.Add("domain", Domain);
-            request.Headers.Add("Authorization", String.Format("Bearer {0}", token));
-            var content = new StringContent("{\n    \n}", null, "application/json");
-            request.Content = content;
+            request.Headers.Add("Authorization",String.Format( "Bearer {0}",token));
             var response = client.SendAsync(request).Result;
-
+          
 
             if (response.IsSuccessStatusCode)
             {

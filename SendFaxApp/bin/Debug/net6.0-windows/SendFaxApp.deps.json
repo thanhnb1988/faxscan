@@ -8,7 +8,10 @@
     ".NETCoreApp,Version=v6.0": {
       "SendFaxApp/1.0.0": {
         "dependencies": {
+          "FluentScheduler": "5.5.1",
           "Mindbox.Data.Linq": "10.5.0",
+          "NLog": "4.6.3",
+          "NLog.Config": "4.6.3",
           "Newtonsoft.Json": "13.0.3",
           "SocketIoClientDotNet": "0.9.13",
           "System.Net.Http": "4.3.4"
@@ -71,6 +74,14 @@
           "lib/net45/EngineIoClientDotNet.dll": {
             "assemblyVersion": "0.9.22.0",
             "fileVersion": "0.9.22.0"
+          }
+        }
+      },
+      "FluentScheduler/5.5.1": {
+        "runtime": {
+          "lib/netstandard2.1/FluentScheduler.dll": {
+            "assemblyVersion": "5.5.1.0",
+            "fileVersion": "5.5.1.0"
           }
         }
       },
@@ -297,6 +308,21 @@
           }
         }
       },
+      "NLog/4.6.3": {
+        "runtime": {
+          "lib/netstandard2.0/NLog.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.6.3.9764"
+          }
+        }
+      },
+      "NLog.Config/4.6.3": {
+        "dependencies": {
+          "NLog": "4.6.3",
+          "NLog.Schema": "4.6.3"
+        }
+      },
+      "NLog.Schema/4.6.3": {},
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
       "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
       "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
@@ -865,6 +891,13 @@
       "path": "engineioclientdotnet/0.9.22",
       "hashPath": "engineioclientdotnet.0.9.22.nupkg.sha512"
     },
+    "FluentScheduler/5.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OwehD7vZ1CFAboLPrfBTibz/FeKg8DK1h242u0Y050dbfcOlb+d4S/iGBNt/yHaHIhCsmPiQqQjG13e441xWLA==",
+      "path": "fluentscheduler/5.5.1",
+      "hashPath": "fluentscheduler.5.5.1.nupkg.sha512"
+    },
     "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
       "type": "package",
       "serviceable": true,
@@ -997,6 +1030,27 @@
       "sha512": "sha512-HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
       "path": "newtonsoft.json/13.0.3",
       "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
+    },
+    "NLog/4.6.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DYbJKfpjciXc/y177fou0XsSB+ZsPFW63c3ZtrYNScU2Sw3j4o12zVpm7p30PCaaSUMLdn1iYF1KbdPcdR0Ofg==",
+      "path": "nlog/4.6.3",
+      "hashPath": "nlog.4.6.3.nupkg.sha512"
+    },
+    "NLog.Config/4.6.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dcgGeUSEM1jidhdBZvhAdp+J6Bg497AlSg5eGPrsuETq06Rh4LsmuIP3maXcZWK/Xp8wSY8DQeXYG7sg5jtnLA==",
+      "path": "nlog.config/4.6.3",
+      "hashPath": "nlog.config.4.6.3.nupkg.sha512"
+    },
+    "NLog.Schema/4.6.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tdPRFVG7vduutZfmWA8Q7UnNiZhbaAWEAlHfQFh8qy1sX1D3FR5Sot1cYCOKh/NcaaR0nap7LMvc1isBvSREvg==",
+      "path": "nlog.schema/4.6.3",
+      "hashPath": "nlog.schema.4.6.3.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {
       "type": "package",

@@ -23,6 +23,8 @@ using System.Transactions;
 using System.Drawing;
 using Microsoft.VisualBasic.Logging;
 using System.Net.WebSockets;
+using FluentScheduler;
+using NLog;
 
 namespace SendFaxApp
 {
@@ -41,9 +43,24 @@ namespace SendFaxApp
             clearOpenFileSendFaxTest();
             lblInfoTest.Text = Environment.MachineName;
 
-            RunInBackground(TimeSpan.FromSeconds(15), DownloadFileAysn);
-            RunInBackground(TimeSpan.FromSeconds(30), LoginAuthenAysn);
-            RunInBackground(TimeSpan.FromMinutes(5), SendFaxAysn);
+            JobManager.Initialize();
+
+            JobManager.AddJob(
+                () => { DownloadFileAysn(); },
+                s => s.ToRunEvery(40).Seconds()
+            );
+
+            JobManager.AddJob(
+                () => { LoginAuthenAysn(); },
+                s => s.ToRunEvery(5).Minutes()
+            );
+
+            JobManager.AddJob(
+                () => { SendFaxAysn(); },
+                s => s.ToRunEvery(6).Minutes()
+            );
+
+
         }
 
         private void clearOpenFileSendFaxTest()
@@ -637,6 +654,8 @@ namespace SendFaxApp
 
         private void DownloadFileAysn()
         {
+            System.Net.ServicePointManager.DefaultConnectionLimit = 1000;
+
             var authen = GetDefaultMDOAuthen();
             if (IsAuthenInValid(authen))
             {
@@ -658,11 +677,15 @@ namespace SendFaxApp
                         foreach (var item in fileDownloads)
                         {
                             var file = downloadServicecs.download(item.Storage, item.FilePath, item.FileName);
+                            Logger logger = LogManager.GetCurrentClassLogger();
+                            logger.Info(file.ToString());
                             FileService fileService = new FileService();
+                            file.Position = 0;
                             string realPath = String.Format("{0}_{1}", faxRequest.Id, item.FileName);
                             fileService.saveFile(config.FileSaveUrl, realPath, file);
+                            file.Flush();
                             item.Status = (int)FaxStatusDef.Downloading;
-                            item.FaxRealPath = realPath;
+                            item.FaxRealPath = String.Format("{0}\\{1}", config.FileSaveUrl, realPath);
                         }
                         faxRequest.Status = (int)FaxStatusDef.Downloading;
                         context.SubmitChanges();
@@ -717,6 +740,7 @@ namespace SendFaxApp
                         foreach (var item in fileDownloads)
                         {
                             faxDocInfo.Bodies.Add(item.FaxRealPath);
+                            item.Status = (int)FaxStatusDef.Faxing;
 
                         }
 
@@ -731,9 +755,10 @@ namespace SendFaxApp
                         clearOpenFileSendFaxTest();
                         faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
 
-                        FaxSendStatusService faxSendStatusService = new FaxSendStatusService(authen.ApiUrl, authen.Token);
+                        FaxSendStatusService faxSendStatusService = new FaxSendStatusService(authen.ApiUrl, authen.Domain);
                         faxSendStatusService.SendStatus(faxRequest.RequestId, authen.Token, listRecipients.ToList());
-
+                        faxRequest.Status = (int)FaxStatusDef.Faxing;
+                        context.SubmitChanges();
 
                     }
                 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "cWN2VT47C1o/lwdsAGZFnQ8gD2/DkgrsRrGwMBTaQOAy8Z1YDRMcZKb1JlorJdGqzrdxq3+KOBKjj9WjTfdLwg==",
+  "dgSpecHash": "kkx2SoxhtvfQ+kn/I2E2jVvkEXwv4WkwngnPm3o4wQQuWlSmdxFTO+Zfy3RD888dTcd5qFp2mkxfmGr75ZJ6Uw==",
   "success": true,
   "projectFilePath": "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SendFaxApp\\SendFaxApp.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\ThaoPC\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\engineioclientdotnet\\0.9.22\\engineioclientdotnet.0.9.22.nupkg.sha512",
+    "C:\\Users\\ThaoPC\\.nuget\\packages\\fluentscheduler\\5.5.1\\fluentscheduler.5.5.1.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\microsoft.data.sqlclient\\5.1.0\\microsoft.data.sqlclient.5.1.0.nupkg.sha512",
@@ -27,6 +28,9 @@
     "C:\\Users\\ThaoPC\\.nuget\\packages\\mindbox.data.linq\\10.5.0\\mindbox.data.linq.10.5.0.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\mindbox.expressions\\3.3.0\\mindbox.expressions.3.3.0.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\ThaoPC\\.nuget\\packages\\nlog\\4.6.3\\nlog.4.6.3.nupkg.sha512",
+    "C:\\Users\\ThaoPC\\.nuget\\packages\\nlog.config\\4.6.3\\nlog.config.4.6.3.nupkg.sha512",
+    "C:\\Users\\ThaoPC\\.nuget\\packages\\nlog.schema\\4.6.3\\nlog.schema.4.6.3.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\ThaoPC\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
