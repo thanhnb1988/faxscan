@@ -48,10 +48,6 @@
               "target": "Package",
               "version": "[13.0.3, )"
             },
-            "SocketIOClient": {
-              "target": "Package",
-              "version": "[3.0.8, )"
-            },
             "SocketIoClientDotNet": {
               "target": "Package",
               "version": "[0.9.13, )"
