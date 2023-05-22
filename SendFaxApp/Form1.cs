@@ -569,11 +569,19 @@ namespace SendFaxApp
 
                         onConnectWebSocket(host, token, chanel);
                     }
-
-                    this.Invoke(new MethodInvoker(delegate ()
+                    else
                     {
-                        lblSockeStatus.Text = data.ToString();
-                    }));
+                        this.Invoke(new MethodInvoker(delegate ()
+                        {
+                            lblSockeStatus.Text = data.ToString();
+                        }));
+                        var action = new Action(() => {
+                            onConnectWebSocket(host, token, chanel);
+                        });
+                        SetTimeout(action, 1000);
+                    }
+
+                  
 
                 });
 
@@ -594,6 +602,18 @@ namespace SendFaxApp
             {
                 return false;
             }
+        }
+
+        public void SetTimeout(Action action, int timeout)
+        {
+            var timer = new System.Windows.Forms.Timer();
+            timer.Interval = timeout;
+            timer.Tick += (s, e) =>
+            {
+                action();
+                timer.Stop();
+            };
+            timer.Start();
         }
 
         private void parseFaxRequestData(string data)

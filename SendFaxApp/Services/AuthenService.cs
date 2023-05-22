@@ -39,23 +39,7 @@ namespace SendFaxApp.Services
                 loginRespone = JsonConvert.DeserializeObject<LoginRespone>(result);
             }
             return loginRespone;
-            //using (var client = new HttpClient())
-            //{
-            //    //Passing service base url
-            //    client.BaseAddress = new Uri(Baseurl);
-            //    client.DefaultRequestHeaders.Clear();
-            //    var json = JsonConvert.SerializeObject(request);
-            //    var data = new StringContent(json, Encoding.UTF8, "application/json");
-            //    HttpResponseMessage res = client.PostAsync("/api/common/limitless/public/auth/login/external-api ", data).Result;
-
-            //    if (res.IsSuccessStatusCode)
-            //    {
-
-            //        var result = res.Content.ReadAsStringAsync().Result;
-
-            //        response = JsonConvert.DeserializeObject<LoginRespone>(result);
-            //    }
-            //    return response;
+           
         
         }
     }
