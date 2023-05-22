@@ -61,3 +61,4 @@ C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\n
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\FluentScheduler.dll
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\NLog.config
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\NLog.dll
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\websocket-sharp.dll

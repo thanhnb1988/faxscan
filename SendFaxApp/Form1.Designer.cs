@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             lblHostName = new Label();
             txtHostName = new TextBox();
             btnTestFAX = new Button();
@@ -601,6 +602,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(707, 357);
             Controls.Add(tabControl1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "Fax config";
             tabControl1.ResumeLayout(false);

@@ -25,6 +25,7 @@ using Microsoft.VisualBasic.Logging;
 using System.Net.WebSockets;
 using FluentScheduler;
 using NLog;
+using WebSocketSharp;
 
 namespace SendFaxApp
 {
@@ -57,7 +58,7 @@ namespace SendFaxApp
 
             JobManager.AddJob(
                 () => { SendFaxAysn(); },
-                s => s.ToRunEvery(6).Minutes()
+                s => s.ToRunEvery(7).Minutes()
             );
 
 
@@ -342,13 +343,13 @@ namespace SendFaxApp
             FaxDocInfo faxDocInfo = new FaxDocInfo();
             faxDocInfo.DocumentName = txtDocumentName.Text;
 
-            faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST.pdf");
-            faxDocInfo.Bodies.Add(@"C:\Users\admin\Desktop\Fax Auto\TEST_2.pdf");
+            faxDocInfo.Bodies.Add(fileFaxTest);
+
 
             FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
             faxRecipientsInfo.listFaxRecipientsItem = new List<FaxRecipientsItem>();
             faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = txtFaxNumber.Text, Name = txtReiverName.Text });
-            faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = "2222", Name = "" });
+
             clearOpenFileSendFaxTest();
             faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
         }
@@ -677,7 +678,7 @@ namespace SendFaxApp
                         foreach (var item in fileDownloads)
                         {
                             var file = downloadServicecs.download(item.Storage, item.FilePath, item.FileName);
-                            Logger logger = LogManager.GetCurrentClassLogger();
+                            NLog.Logger logger = LogManager.GetCurrentClassLogger();
                             logger.Info(file.ToString());
                             FileService fileService = new FileService();
                             file.Position = 0;
@@ -743,7 +744,8 @@ namespace SendFaxApp
                             item.Status = (int)FaxStatusDef.Faxing;
 
                         }
-
+                        faxRequest.Status = (int)FaxStatusDef.Faxing;
+                        context.SubmitChanges();
 
                         FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
                         faxRecipientsInfo.listFaxRecipientsItem = new List<FaxRecipientsItem>();
@@ -757,8 +759,7 @@ namespace SendFaxApp
 
                         FaxSendStatusService faxSendStatusService = new FaxSendStatusService(authen.ApiUrl, authen.Domain);
                         faxSendStatusService.SendStatus(faxRequest.RequestId, authen.Token, listRecipients.ToList());
-                        faxRequest.Status = (int)FaxStatusDef.Faxing;
-                        context.SubmitChanges();
+
 
                     }
                 }
