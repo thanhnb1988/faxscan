@@ -26,6 +26,7 @@ using System.Net.WebSockets;
 using FluentScheduler;
 using NLog;
 using WebSocketSharp;
+using System.Configuration;
 
 namespace SendFaxApp
 {
@@ -48,12 +49,12 @@ namespace SendFaxApp
 
             JobManager.AddJob(
                 () => { DownloadFileAysn(); },
-                s => s.ToRunEvery(40).Seconds()
+                s => s.ToRunEvery(GetDownLoadTimeInSecond()).Seconds()
             );
 
             JobManager.AddJob(
                 () => { LoginAuthenAysn(); },
-                s => s.ToRunEvery(5).Minutes()
+                s => s.ToRunEvery(GeLogInTimeInMinute()).Minutes()
             );
 
             JobManager.AddJob(
@@ -61,6 +62,45 @@ namespace SendFaxApp
                 s => s.ToRunEvery(7).Minutes()
             );
 
+
+        }
+
+
+        private int GetDownLoadTimeInSecond()
+        {
+            try
+            {
+                return Int32.Parse(ConfigurationManager.AppSettings.Get("DownLoadTimeInSeconds")??"40");
+            }catch(Exception ex)
+            {
+                return 40;
+            }
+           
+        }
+
+        private int GeLogInTimeInMinute()
+        {
+            try
+            {
+                return Int32.Parse(ConfigurationManager.AppSettings.Get("LoginTimeinMinute") ?? "10");
+            }
+            catch (Exception ex)
+            {
+                return 10;
+            }
+
+        }
+
+        private int GeSendTaxTimeInMinute()
+        {
+            try
+            {
+                return Int32.Parse(ConfigurationManager.AppSettings.Get("SendFaxTimeinMinute") ?? "10");
+            }
+            catch (Exception ex)
+            {
+                return 10;
+            }
 
         }
 
