@@ -60,8 +60,15 @@ namespace SendFaxApp
 
             JobManager.AddJob(
                 () => { SendFaxAysn(); },
-                s => s.ToRunEvery(7).Minutes()
+                s => s.ToRunEvery(GetSendTaxTimeInMinute()).Minutes()
             );
+
+            JobManager.AddJob(
+               () => { AutoConnectWebSocket(); },
+               s => s.ToRunEvery(15).Minutes()
+           );
+            
+
 
 
         }
@@ -92,7 +99,7 @@ namespace SendFaxApp
 
         }
 
-        private int GeSendTaxTimeInMinute()
+        private int GetSendTaxTimeInMinute()
         {
             try
             {
@@ -514,6 +521,17 @@ namespace SendFaxApp
                 || String.IsNullOrEmpty(authen.WebSocketUrl)
                 || String.IsNullOrEmpty(authen.Domain)
                 || String.IsNullOrEmpty(authen.Token));
+        }
+
+        private void AutoConnectWebSocket()
+        {
+            var authen = GetDefaultMDOAuthen();
+            if (!IsAuthenInValid(authen))
+            {
+                onConnectWebSocket(authen.WebSocketUrl, authen.Token, authen.WebSocketChanel);
+                return;
+            }
+           
         }
 
         private void btnConnectSocket_Click(object sender, EventArgs e)
