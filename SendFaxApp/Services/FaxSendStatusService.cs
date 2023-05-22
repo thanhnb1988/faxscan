@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using SendFaxApp.Model.MDO;
 using System;
 using System.Collections.Generic;
@@ -19,31 +20,39 @@ namespace SendFaxApp.Services
 
         public async Task<MDOBaseResponse> SendStatus(string id, string token, List<string> address)
         {
-            MDOBaseResponse mdobaseResponse = new MDOBaseResponse();
-
-           
-            var url = String.Format("{0}/api/core/channel/private/update-address-sending-status/{1}", Baseurl, id);
-             var pars = buildQueryString(address);
-            if (pars != null)
+            try
             {
-                url += "?" + pars;
+                MDOBaseResponse mdobaseResponse = new MDOBaseResponse();
+
+                var url = String.Format("{0}/api/core/channel/private/update-address-sending-status/{1}", Baseurl, id);
+                var pars = buildQueryString(address);
+                if (pars != null)
+                {
+                    url += "?" + pars;
+                }
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Put, url);
+                request.Headers.Add("domain", Domain);
+                request.Headers.Add("Authorization", String.Format("Bearer {0}", token));
+                var response = client.SendAsync(request).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    var result = response.Content.ReadAsStringAsync().Result;
+
+                    mdobaseResponse = JsonConvert.DeserializeObject<MDOBaseResponse>(result);
+                }
+
+                return mdobaseResponse;
             }
-            var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Put, url);
-            request.Headers.Add("domain", Domain);
-            request.Headers.Add("Authorization",String.Format( "Bearer {0}",token));
-            var response = client.SendAsync(request).Result;
+            catch(Exception ex)
+            {
+                NLog.Logger logger = LogManager.GetCurrentClassLogger();
+                logger.Error(ex.Message);
+                throw ex;
+            }
           
-
-            if (response.IsSuccessStatusCode)
-            {
-
-                var result = response.Content.ReadAsStringAsync().Result;
-
-                mdobaseResponse = JsonConvert.DeserializeObject<MDOBaseResponse>(result);
-            }
-
-            return mdobaseResponse;
         }
 
         private string buildQueryString(List<string> address)

@@ -22,18 +22,28 @@ namespace SendFaxApp.Services
         public  Stream download(string Storage,string FilePath, string FileName)
         {
             NLog.Logger logger = LogManager.GetCurrentClassLogger();
-            var client = new HttpClient();
-            string dowwnLoadUrl = String.Format("{0}/api/core/file/private/download?storage={1}&filePath={2}&fileName={3}",Baseurl, Storage, FilePath, FileName);
-            var request = new HttpRequestMessage(HttpMethod.Get, dowwnLoadUrl);
-            request.Headers.Add("domain", Domain);
-            request.Headers.Add("Authorization", String.Format("Bearer  {0}",Token));
-            var response =   client.SendAsync(request).Result;
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return response.Content.ReadAsStreamAsync().Result;
+                var client = new HttpClient();
+                string dowwnLoadUrl = String.Format("{0}/api/core/file/private/download?storage={1}&filePath={2}&fileName={3}", Baseurl, Storage, FilePath, FileName);
+                var request = new HttpRequestMessage(HttpMethod.Get, dowwnLoadUrl);
+                request.Headers.Add("domain", Domain);
+                request.Headers.Add("Authorization", String.Format("Bearer  {0}", Token));
+                var response = client.SendAsync(request).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return response.Content.ReadAsStreamAsync().Result;
+                }
+                logger.Info("Error download file:" + response.StatusCode.ToString());
+                return null;
             }
-            logger.Info("Error download file:" + response.StatusCode.ToString());
-            return null;
+            catch(Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                throw ex;
+            }
+           
         }
     }
 }

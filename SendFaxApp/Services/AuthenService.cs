@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using SendFaxApp.Model.MDO;
 using System;
 using System.Collections.Generic;
@@ -21,26 +22,35 @@ namespace SendFaxApp.Services
 
         public async Task<LoginRespone> login(LoginRequest loginRequest)
         {
-
-            LoginRespone loginRespone = new LoginRespone();
-
-            var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://service-poc.bssd.vn/api/common/limitless/public/auth/login/external-api");
-            request.Headers.Add("Accept-Language", "vi");
-            request.Headers.Add("domain", "poc.bssd.vn");
-            var content = new StringContent("{\n    \"clientId\": \""+loginRequest.ClientId+"\",\n    \"clientSecret\": \""+loginRequest.ClientSecret+"\"\n}", null, "application/json");
-            request.Content = content;
-            var response =  client.SendAsync(request).Result;
-            if (response.IsSuccessStatusCode)
+            try
             {
+                LoginRespone loginRespone = new LoginRespone();
 
-                var result = response.Content.ReadAsStringAsync().Result;
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://service-poc.bssd.vn/api/common/limitless/public/auth/login/external-api");
+                request.Headers.Add("Accept-Language", "vi");
+                request.Headers.Add("domain", "poc.bssd.vn");
+                var content = new StringContent("{\n    \"clientId\": \"" + loginRequest.ClientId + "\",\n    \"clientSecret\": \"" + loginRequest.ClientSecret + "\"\n}", null, "application/json");
+                request.Content = content;
+                var response = client.SendAsync(request).Result;
+                if (response.IsSuccessStatusCode)
+                {
 
-                loginRespone = JsonConvert.DeserializeObject<LoginRespone>(result);
+                    var result = response.Content.ReadAsStringAsync().Result;
+
+                    loginRespone = JsonConvert.DeserializeObject<LoginRespone>(result);
+                }
+                return loginRespone;
+
+            }catch(Exception ex)
+            {
+                NLog.Logger logger = LogManager.GetCurrentClassLogger();
+                logger.Error(ex.Message);
+                throw ex;
             }
-            return loginRespone;
-           
-        
+
+
+
         }
     }
 }

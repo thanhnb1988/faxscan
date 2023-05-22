@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Newtonsoft.Json;
+using NLog;
 using SendFaxApp.Model.MDO;
 using System;
 using System.Collections.Generic;
@@ -23,26 +24,37 @@ namespace SendFaxApp.Services
 
         public async Task<MDOBaseResponse> registerChanel(string chanelRegister,string token )
         {
-            MDOBaseResponse webSocketChanelResponse = new MDOBaseResponse();
+            try
+            {
+                MDOBaseResponse webSocketChanelResponse = new MDOBaseResponse();
 
-            var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Put,String.Format( "{0}/api/core/channel/private/register-fax-machine/{1}",Baseurl,chanelRegister));
-            request.Headers.Add("domain", Domain);
-            request.Headers.Add("Authorization", String.Format("Bearer {0}",token));
-            var content = new StringContent("{\n    \n}", null, "application/json");
-            request.Content = content;
-            var response =  client.SendAsync(request).Result;
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Put, String.Format("{0}/api/core/channel/private/register-fax-machine/{1}", Baseurl, chanelRegister));
+                request.Headers.Add("domain", Domain);
+                request.Headers.Add("Authorization", String.Format("Bearer {0}", token));
+                var content = new StringContent("{\n    \n}", null, "application/json");
+                request.Content = content;
+                var response = client.SendAsync(request).Result;
 
 
-            if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
+                {
+
+                    var result = response.Content.ReadAsStringAsync().Result;
+
+                    webSocketChanelResponse = JsonConvert.DeserializeObject<MDOBaseResponse>(result);
+                }
+
+                return webSocketChanelResponse;
+            }
+            catch(Exception ex)
             {
 
-                var result = response.Content.ReadAsStringAsync().Result;
-
-                webSocketChanelResponse = JsonConvert.DeserializeObject<MDOBaseResponse>(result);
+                NLog.Logger logger = LogManager.GetCurrentClassLogger();
+                logger.Error(ex.Message);
+                throw ex;
             }
-
-            return webSocketChanelResponse;
+          
         }
     }
     
