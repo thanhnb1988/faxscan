@@ -11,5 +11,6 @@ namespace SendFaxApp.Model.LinQ
         Pending,
         Downloading,
         Faxing,
+        DownloadError =-1,
     }
 }

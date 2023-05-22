@@ -35,6 +35,7 @@ namespace SendFaxApp
         private String connectionStriong = System.Configuration.ConfigurationManager.
     ConnectionStrings["SendFaxApp.Properties.Settings.FaxConfigDBConnectionString"].ConnectionString;
 
+        NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
         private String fileFaxTest = "";
 
@@ -546,7 +547,7 @@ namespace SendFaxApp
                     Reconnection = true,
                     AutoConnect = true,
                     ReconnectionAttempts = 10,
-
+                    ForceNew=true,
                     ReconnectionDelay = 600,
 
                 };
@@ -597,6 +598,8 @@ namespace SendFaxApp
 
         private void parseFaxRequestData(string data)
         {
+            logger.Info("Socket data:" + data);
+
             var jsonFax = tryToParseFaxDataObj(data);
 
             if (jsonFax == null || String.IsNullOrEmpty(jsonFax.Id))
@@ -712,21 +715,31 @@ namespace SendFaxApp
                     var faxRequest = context.FaxRequests.Where(c => c.Status == (int)FaxStatusDef.Pending).FirstOrDefault();
                     if (faxRequest != null)
                     {
-                        var fileDownloads = context.FaxRequestAttachFiles.Where(c => c.FaxRequestId == faxRequest.Id).ToList();
+                     
+                        var fileDownloads = context.FaxRequestAttachFiles.Where(c => c.FaxRequestId == faxRequest.Id&&c.Status== (int)FaxStatusDef.Pending).ToList();
                         DownloadServicecs downloadServicecs = new DownloadServicecs(authen.ApiUrl, authen.Domain);
                         downloadServicecs.Token = authen.Token;
                         foreach (var item in fileDownloads)
                         {
                             var file = downloadServicecs.download(item.Storage, item.FilePath, item.FileName);
-                            NLog.Logger logger = LogManager.GetCurrentClassLogger();
-                            logger.Info(file.ToString());
-                            FileService fileService = new FileService();
-                            file.Position = 0;
-                            string realPath = String.Format("{0}_{1}", faxRequest.Id, item.FileName);
-                            fileService.saveFile(config.FileSaveUrl, realPath, file);
-                            file.Flush();
-                            item.Status = (int)FaxStatusDef.Downloading;
-                            item.FaxRealPath = String.Format("{0}\\{1}", config.FileSaveUrl, realPath);
+                            if (file == null)
+                            {
+                                logger.Info(String.Format("Could not download file storage:{0}_file path:{1}_fileName :{2}",item.Storage,item.FilePath,item.FileName));
+                                item.Status = (int)FaxStatusDef.DownloadError;
+
+                            }
+                            else
+                            {
+                                FileService fileService = new FileService();
+                                file.Position = 0;
+                                string realPath = String.Format("{0}_{1}", faxRequest.Id, item.FileName);
+                                fileService.saveFile(config.FileSaveUrl, realPath, file);
+                                file.Flush();
+                                item.Status = (int)FaxStatusDef.Downloading;
+                                item.FaxRealPath = String.Format("{0}\\{1}", config.FileSaveUrl, realPath);
+                            }
+                           
+                      
                         }
                         faxRequest.Status = (int)FaxStatusDef.Downloading;
                         context.SubmitChanges();
@@ -763,7 +776,8 @@ namespace SendFaxApp
 
                 var faxConfig = GetDefaultFaxConfig();
                 var faxRequest = context.FaxRequests.Where(c => c.Status == (int)FaxStatusDef.Downloading).FirstOrDefault();
-                if (authen != null && faxConfig != null)
+                var isExistErrorFile = context.FaxRequestAttachFiles.Any(c => c.Status == (int)FaxStatusDef.DownloadError);
+                if (authen != null && faxConfig != null&&!isExistErrorFile)
                 {
                     if (faxRequest != null)
                     {
