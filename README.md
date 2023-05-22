@@ -50,7 +50,7 @@ SqlLocalDB start  MSSQLLocalDB
 
 
 3 .Copy 2 file database FaxConfigDB.mdf and FaxConfigDB.ldf from Database folder  to other place then change connection string in SendFaxApp.dll.config
-![open visual studio](images/b6_changeAdobeReader.png)
+![open visual studio](images/b31_changeAppConfig.png)
 
 
 4 .Change connection string 
