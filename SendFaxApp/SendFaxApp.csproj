@@ -51,7 +51,10 @@
 
   <ItemGroup>
     <None Update="Database\FaxConfigDB.mdf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Database\FaxConfigDB_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="FaxDBLinQ.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
