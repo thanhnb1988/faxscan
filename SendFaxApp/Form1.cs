@@ -528,7 +528,7 @@ namespace SendFaxApp
             var authen = GetDefaultMDOAuthen();
             if (!IsAuthenInValid(authen))
             {
-                onConnectWebSocket(authen.WebSocketUrl, authen.Token, authen.WebSocketChanel);
+                onConnectWebSocket(authen.ApiUrl,authen.WebSocketUrl, authen.Token, authen.Token, authen.WebSocketChanel);
                 return;
             }
            
@@ -542,13 +542,13 @@ namespace SendFaxApp
                 MessageBox.Show("Not login or config authen");
                 return;
             }
-            onConnectWebSocket(authen.WebSocketUrl, authen.Token, authen.WebSocketChanel);
+            onConnectWebSocket(authen.ApiUrl,authen.WebSocketUrl,authen.Domain, authen.Token, authen.WebSocketChanel);
 
             MessageBox.Show("Web socket connect successfully");
 
         }
 
-        private bool onConnectWebSocket(string host, String token, String chanel)
+        private bool onConnectWebSocket(string apiUrl,string host,string domain, String token, String chanel)
         {
             Socket socket;
             int i = 0;
@@ -585,7 +585,7 @@ namespace SendFaxApp
                     if (data.ToString() == "io server disconnect")
                     {
 
-                        onConnectWebSocket(host, token, chanel);
+                        onConnectWebSocket(apiUrl,host, domain, token, chanel);
                     }
                     else
                     {
@@ -594,7 +594,7 @@ namespace SendFaxApp
                             lblSockeStatus.Text = data.ToString();
                         }));
                         var action = new Action(() => {
-                            onConnectWebSocket(host, token, chanel);
+                            onConnectWebSocket(apiUrl,host,domain, token, chanel);
                         });
                         SetTimeout(action, 1000);
                     }
@@ -609,7 +609,7 @@ namespace SendFaxApp
                     {
                         lblSockeStatus.Text = " Number of data: " + (i++);
                     }));
-                    parseFaxRequestData(data.ToString());
+                    parseFaxRequestData(apiUrl,domain,token,data.ToString());
                 });
 
                 socket.Connect();
@@ -634,7 +634,7 @@ namespace SendFaxApp
             timer.Start();
         }
 
-        private void parseFaxRequestData(string data)
+        private void parseFaxRequestData(string apiUrl, string domain, string token, string data)
         {
             logger.Info("Socket data:" + data);
 
@@ -688,6 +688,9 @@ namespace SendFaxApp
                     }
                 }
             }
+
+            SocketDataStatusService socketDataStatusService = new SocketDataStatusService(apiUrl, domain);
+            socketDataStatusService.SendStatusSuccess(jsonFax.Id, token);
         }
 
         private FaxData tryToParseFaxDataObj(string data)
