@@ -650,43 +650,49 @@ namespace SendFaxApp
                 }));
                 return;
             }
-            using (var context = new DbFaxContext(connectionStriong))
+            try
             {
-                using (var transaction = new TransactionScope())
+                using (var context = new DbFaxContext(connectionStriong))
                 {
-
-                    var faxRequest = new FaxRequest();
-                    faxRequest.RequestId = jsonFax.Id;
-                    faxRequest.Subject = jsonFax.Subject;
-                    faxRequest.Domain = jsonFax.Domain;
-                    faxRequest.Address = string.Join(",", jsonFax.Address);
-                    faxRequest.Status = (int)FaxStatusDef.Pending;
-
-                    context.FaxRequests.InsertOnSubmit(faxRequest);
-                    context.SubmitChanges();
-                    if (jsonFax.AttachFiles != null && jsonFax.AttachFiles.Any())
+                    using (var transaction = new TransactionScope())
                     {
-                        List<FaxRequestAttachFile> listFile = new List<FaxRequestAttachFile>();
-                        foreach (var item in jsonFax.AttachFiles)
-                        {
-                            FaxRequestAttachFile fileAttach = new FaxRequestAttachFile();
-                            fileAttach.Domain = item.Domain;
-                            fileAttach.FileName = item.FileName;
-                            fileAttach.FilePath = item.FilePath;
-                            fileAttach.FaxRequestId = faxRequest.Id;
-                            fileAttach.Storage = item.Storage;
-                            fileAttach.Status = (int)FaxStatusDef.Pending;
-                            listFile.Add(fileAttach);
-                        }
-                        context.FaxRequestAttachFiles.InsertAllOnSubmit(listFile);
+
+                        var faxRequest = new FaxRequest();
+                        faxRequest.RequestId = jsonFax.Id;
+                        faxRequest.Subject = jsonFax.Subject;
+                        faxRequest.Domain = jsonFax.Domain;
+                        faxRequest.Address = string.Join(",", jsonFax.Address);
+                        faxRequest.Status = (int)FaxStatusDef.Pending;
+
+                        context.FaxRequests.InsertOnSubmit(faxRequest);
                         context.SubmitChanges();
-                        transaction.Complete();
+                        if (jsonFax.AttachFiles != null && jsonFax.AttachFiles.Any())
+                        {
+                            List<FaxRequestAttachFile> listFile = new List<FaxRequestAttachFile>();
+                            foreach (var item in jsonFax.AttachFiles)
+                            {
+                                FaxRequestAttachFile fileAttach = new FaxRequestAttachFile();
+                                fileAttach.Domain = item.Domain;
+                                fileAttach.FileName = item.FileName;
+                                fileAttach.FilePath = item.FilePath;
+                                fileAttach.FaxRequestId = faxRequest.Id;
+                                fileAttach.Storage = item.Storage;
+                                fileAttach.Status = (int)FaxStatusDef.Pending;
+                                listFile.Add(fileAttach);
+                            }
+                            context.FaxRequestAttachFiles.InsertAllOnSubmit(listFile);
+                            context.SubmitChanges();
+                            transaction.Complete();
+                        }
                     }
                 }
-            }
 
-            SocketDataStatusService socketDataStatusService = new SocketDataStatusService(apiUrl, domain);
-            socketDataStatusService.SendStatusSuccess(jsonFax.Id, token);
+                SocketDataStatusService socketDataStatusService = new SocketDataStatusService(apiUrl, domain);
+                socketDataStatusService.SendStatusSuccess(jsonFax.Id, token);
+            }catch(Exception ex)
+            {
+                logger.Error(ex.Message);
+            }
         }
 
         private FaxData tryToParseFaxDataObj(string data)
