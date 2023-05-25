@@ -38,10 +38,13 @@ namespace SendFaxApp.Services
 
                     var result = response.Content.ReadAsStringAsync().Result;
 
-                    loginRespone = JsonConvert.DeserializeObject<LoginRespone>(result);
+                    return JsonConvert.DeserializeObject<LoginRespone>(result);
                 }
-                return loginRespone;
-
+                else
+                {
+                    return null;
+                }
+                
             }catch(Exception ex)
             {
                 NLog.Logger logger = LogManager.GetCurrentClassLogger();

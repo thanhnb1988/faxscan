@@ -272,23 +272,31 @@ namespace SendFaxApp
                 var authenApiResponse = GetMDOAuthenToken(authen.ApiUrl, authen.Domain, authen.ClientId, authen.ClientSecret);
                 if (authenApiResponse != null)
                 {
+                   
+
                     authen.Token = authenApiResponse.Data.Token;
                     authen.TokenTimeout = authenApiResponse.Data.TokenTimeout.ToString();
                     authen.TokentExpiredAt = authenApiResponse.Data.TokenExpiredAt.ToString();
+                    if (isInsert)
+                    {
+                        context.AuthenMdos.InsertOnSubmit(authen);
+                    }
+
+                    context.SubmitChanges();
+
+                    MessageBox.Show("Update Authen Settings Successfully");
                 }
-
-
-                if (isInsert)
+                else
                 {
-                    context.AuthenMdos.InsertOnSubmit(authen);
+                    MessageBox.Show("Connect to authen api fail");
                 }
 
-                context.SubmitChanges();
+
+                
             }
 
             clearOpenFileSendFaxTest();
 
-            MessageBox.Show("Update Authen Settings Successfully");
         }
 
         private bool validateLoginSettings()
@@ -805,9 +813,10 @@ namespace SendFaxApp
                         authen.Token = authenApiResponse.Data.Token;
                         authen.TokenTimeout = authenApiResponse.Data.TokenTimeout.ToString();
                         authen.TokentExpiredAt = authenApiResponse.Data.TokenExpiredAt.ToString();
+                        context.SubmitChanges();
                     }
                 }
-                context.SubmitChanges();
+              
             }
         }
 
