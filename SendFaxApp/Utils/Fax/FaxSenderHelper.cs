@@ -113,20 +113,22 @@ namespace SendFaxApp.Utils.FaxUtils
             }
         }
 
-        public void SendFaxMultiFilesAndMultiUers(FaxSenderInfo faxSenderInfo, FaxDocInfo faxDocInfo, FaxRecipientsInfo faxRecipientsInfo)
+        public int SendFaxMultiFilesAndMultiUers(FaxSenderInfo faxSenderInfo, FaxDocInfo faxDocInfo, FaxRecipientsInfo faxRecipientsInfo)
         {
             try
             {
                 FaxDocumentSetupMultiFilesAndMultiUsers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
                 object objFaxOutgouingJobIds;
-                object submitReturnValue = faxDoc.Submit2(faxServer.ServerName, out objFaxOutgouingJobIds);
+                int  submitReturnValue = faxDoc.Submit2(faxServer.ServerName, out objFaxOutgouingJobIds);
                 faxDoc = null;
+                return submitReturnValue;
             }
             catch (Exception comException)
             {
                 Console.WriteLine("Error connecting to fax server. Error Message: " + comException.Message);
                 Console.WriteLine("StackTrace: " + comException.StackTrace);
             }
+            return -1000;
         }
 
         private void FaxDocumentSetupMultiFilesAndMultiUsers(FaxSenderInfo faxSenderInfo, FaxDocInfo faxDocInfo, FaxRecipientsInfo faxRecipientsInfo)

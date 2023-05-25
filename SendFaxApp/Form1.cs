@@ -852,7 +852,9 @@ namespace SendFaxApp
                             faxRecipientsInfo.listFaxRecipientsItem.Add(new FaxRecipientsItem() { Number = item });
                         }
                         clearOpenFileSendFaxTest();
-                        faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
+                        var sendFaxResult = faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
+
+                        logger.Info(String.Format("Send fax_ RequestId:{0}_address:{1}_result:{2}",faxRequest.RequestId,faxRequest.Address, sendFaxResult));
 
                         FaxSendStatusService faxSendStatusService = new FaxSendStatusService(authen.ApiUrl, authen.Domain);
                         faxSendStatusService.SendStatus(faxRequest.RequestId, authen.Token, listRecipients.ToList());
