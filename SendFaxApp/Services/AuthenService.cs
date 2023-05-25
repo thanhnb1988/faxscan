@@ -25,11 +25,11 @@ namespace SendFaxApp.Services
             try
             {
                 LoginRespone loginRespone = new LoginRespone();
-
+                string url = String.Format("{0}/api/common/limitless/public/auth/login/external-api",Baseurl);
                 var client = new HttpClient();
-                var request = new HttpRequestMessage(HttpMethod.Post, "https://service-poc.bssd.vn/api/common/limitless/public/auth/login/external-api");
+                var request = new HttpRequestMessage(HttpMethod.Post, url);
                 request.Headers.Add("Accept-Language", "vi");
-                request.Headers.Add("domain", "poc.bssd.vn");
+                request.Headers.Add("domain", Domain);
                 var content = new StringContent("{\n    \"clientId\": \"" + loginRequest.ClientId + "\",\n    \"clientSecret\": \"" + loginRequest.ClientSecret + "\"\n}", null, "application/json");
                 request.Content = content;
                 var response = client.SendAsync(request).Result;
