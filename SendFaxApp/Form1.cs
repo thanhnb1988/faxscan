@@ -67,10 +67,6 @@ namespace SendFaxApp
                () => { AutoConnectWebSocket(); },
                s => s.ToRunEvery(15).Minutes()
            );
-            
-
-
-
         }
 
 
