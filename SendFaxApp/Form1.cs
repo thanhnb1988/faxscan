@@ -561,7 +561,7 @@ namespace SendFaxApp
                     Reconnection = true,
                     AutoConnect = true,
                     ReconnectionAttempts = 10,
-                    ForceNew=true,
+                   
                     ReconnectionDelay = 600,
 
                 };
@@ -589,10 +589,10 @@ namespace SendFaxApp
                         {
                             lblSockeStatus.Text = data.ToString();
                         }));
-                        var action = new Action(() => {
-                            onConnectWebSocket(apiUrl,host,domain, token, chanel);
-                        });
-                        SetTimeout(action, 1000);
+                        //var action = new Action(() => {
+                        //    onConnectWebSocket(apiUrl,host,domain, token, chanel);
+                        //});
+                        //SetTimeout(action, 1000);
                     }
 
                   
