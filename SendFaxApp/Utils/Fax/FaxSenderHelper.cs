@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using FAXCOMEXLib;
+using NLog;
 using SendFaxApp.Model.Fax;
+using WebSocketSharp;
 
 namespace SendFaxApp.Utils.FaxUtils
 {
@@ -9,6 +11,7 @@ namespace SendFaxApp.Utils.FaxUtils
     {
         private static FaxServer faxServer;
         private FaxDocument faxDoc;
+        NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
         public FaxSenderHelper(string bstrServerName)
         {
@@ -125,8 +128,8 @@ namespace SendFaxApp.Utils.FaxUtils
             }
             catch (Exception comException)
             {
-                Console.WriteLine("Error connecting to fax server. Error Message: " + comException.Message);
-                Console.WriteLine("StackTrace: " + comException.StackTrace);
+                logger.Error("Error connecting to fax server. Error Message: " + comException.Message);
+                logger.Error("Error connecting to fax server. Error StackTrace: " + comException.StackTrace);
             }
             return -1000;
         }
