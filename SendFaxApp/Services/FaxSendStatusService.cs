@@ -17,6 +17,7 @@ namespace SendFaxApp.Services
             this.Domain = domain;
 
         }
+        NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
         public async Task<MDOBaseResponse> SendStatus(string id, string token, List<string> address)
         {
@@ -36,6 +37,8 @@ namespace SendFaxApp.Services
                 request.Headers.Add("Authorization", String.Format("Bearer {0}", token));
                 var response = client.SendAsync(request).Result;
 
+                logger.Info("Send fax result  url :{0} and response:{1}", url, response.StatusCode);
+
                 if (response.IsSuccessStatusCode)
                 {
 
@@ -48,7 +51,7 @@ namespace SendFaxApp.Services
             }
             catch(Exception ex)
             {
-                NLog.Logger logger = LogManager.GetCurrentClassLogger();
+               
                 logger.Error(ex.Message);
                 throw ex;
             }
