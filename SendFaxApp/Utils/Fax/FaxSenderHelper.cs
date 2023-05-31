@@ -23,7 +23,7 @@ namespace SendFaxApp.Utils.FaxUtils
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                logger.Error(ex.Message);
             }
         }
 
