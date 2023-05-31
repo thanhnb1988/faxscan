@@ -22,8 +22,7 @@ namespace SendFaxApp.Model.LinQ
         public string Subject { get; set; }
         [Column("Status")]
         public int Status { get; set; }
-        
-        public ICollection<FaxRequestAttachFile> FaxRequestAttachFile { get; set; }
+    
 
     }
 }

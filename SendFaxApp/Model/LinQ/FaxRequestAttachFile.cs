@@ -26,6 +26,5 @@ namespace SendFaxApp.Model.LinQ
         [Column("FaxRealPath")]
         public string FaxRealPath { get; set; }
 
-        public FaxRequest FaxRequest { get; set; }
     }
 }

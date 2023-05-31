@@ -339,17 +339,17 @@
           }
         }
       },
-      "NLog/4.6.3": {
+      "NLog/5.2.0": {
         "runtime": {
           "lib/netstandard2.0/NLog.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "4.6.3.9764"
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.2.0.1813"
           }
         }
       },
       "NLog.Config/4.6.3": {
         "dependencies": {
-          "NLog": "4.6.3",
+          "NLog": "5.2.0",
           "NLog.Schema": "4.6.3"
         }
       },
@@ -1691,12 +1691,12 @@
       "path": "newtonsoft.json/13.0.3",
       "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
     },
-    "NLog/4.6.3": {
+    "NLog/5.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-DYbJKfpjciXc/y177fou0XsSB+ZsPFW63c3ZtrYNScU2Sw3j4o12zVpm7p30PCaaSUMLdn1iYF1KbdPcdR0Ofg==",
-      "path": "nlog/4.6.3",
-      "hashPath": "nlog.4.6.3.nupkg.sha512"
+      "sha512": "sha512-uYBgseY0m/9lQUbZYGsQsTBFOWrfs3iaekzzYMH6vFmpoOAvV8/bp1XxG/suZkwB5h8nAiTJAp7VENWRDKtKPA==",
+      "path": "nlog/5.2.0",
+      "hashPath": "nlog.5.2.0.nupkg.sha512"
     },
     "NLog.Config/4.6.3": {
       "type": "package",

@@ -46,7 +46,7 @@ namespace SendFaxApp
             InitializeComponent();
 
             cnsString=cnsString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
-            logger.Info(cnsString);
+            logger.Error(cnsString);
 
             initDataConifg();
             clearOpenFileSendFaxTest();
