@@ -40,41 +40,39 @@ namespace SendFaxApp
         NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
         private String fileFaxTest = "";
-
+       
         public Form1()
         {
             InitializeComponent();
 
+            cnsString=cnsString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
+            logger.Info(cnsString);
 
-
-
-
-            int i = 1;
             initDataConifg();
-            // clearOpenFileSendFaxTest();
-            // lblInfoTest.Text = Environment.MachineName;
+            clearOpenFileSendFaxTest();
+            lblInfoTest.Text = Environment.MachineName;
 
-            // JobManager.Initialize();
+            JobManager.Initialize();
 
-            // JobManager.AddJob(
-            //     () => { DownloadFileAysn(); },
-            //     s => s.ToRunEvery(GetDownLoadTimeInSecond()).Seconds()
-            // );
+            JobManager.AddJob(
+                () => { DownloadFileAysn(); },
+                s => s.ToRunEvery(GetDownLoadTimeInSecond()).Seconds()
+            );
 
-            // JobManager.AddJob(
-            //     () => { LoginAuthenAysn(); },
-            //     s => s.ToRunEvery(GeLogInTimeInMinute()).Minutes()
-            // );
+            JobManager.AddJob(
+                () => { LoginAuthenAysn(); },
+                s => s.ToRunEvery(GeLogInTimeInMinute()).Minutes()
+            );
 
-            // JobManager.AddJob(
-            //     () => { SendFaxAysn(); },
-            //     s => s.ToRunEvery(GetSendTaxTimeInMinute()).Minutes()
-            // );
+            JobManager.AddJob(
+                () => { SendFaxAysn(); },
+                s => s.ToRunEvery(GetSendTaxTimeInMinute()).Minutes()
+            );
 
-            // JobManager.AddJob(
-            //    () => { AutoConnectWebSocket(); },
-            //    s => s.ToRunEvery(15).Minutes()
-            //);
+            JobManager.AddJob(
+               () => { AutoConnectWebSocket(); },
+               s => s.ToRunEvery(15).Minutes()
+           );
         }
 
 

@@ -1,5 +1,4 @@
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\NLog.config
-C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\Faxsqlite.db
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\SendFaxApp.exe
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\SendFaxApp.dll.config
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\SendFaxApp.deps.json
@@ -95,3 +94,4 @@ C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\n
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.pdb
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\SendFaxApp.genruntimeconfig.cache
 C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\obj\Debug\net6.0-windows\ref\SendFaxApp.dll
+C:\Users\ThaoPC\Desktop\Send-Fax-in-CSharp-master\faxscan\SendFaxApp\bin\Debug\net6.0-windows\Faxsqlite.db
