@@ -69,7 +69,7 @@ namespace SendFaxApp.Services
                     if (first)
                     {
                         query += String.Format("address={0}", item);
-                        first = true;
+                        first = false;
                         continue;
                     }
                     query += String.Format("&address={0}", item);
