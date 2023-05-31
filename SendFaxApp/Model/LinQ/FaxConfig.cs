@@ -1,24 +1,24 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
-using System.Data.Linq.Mapping;
-using System.Linq;
+
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SendFaxApp.Model.LinQ
 {
-    [Table(Name = "FaxConfig")]
+    [Table("FaxConfig")]
     public class FaxConfig
     {
-        [Column(IsPrimaryKey = true, IsDbGenerated = true)]
+        [PrimaryKey, AutoIncrement, Column("Id")]
         public long Id { get; set; }
-        [Column]
+        [Column("HostName")]
         public string HostName { get; set; }
-        [Column]
+        [Column("SenderName")]
         public string SenderName { get; set; }
-        [Column]
+        [Column("CompanyName")]
         public string CompanyName { get; set; }
-        [Column]
+        [Column("FileSaveUrl")]
         public string FileSaveUrl { get; set; }
     }
 }

@@ -64,6 +64,10 @@
               "target": "Package",
               "version": "[0.9.13, )"
             },
+            "System.Data.SQLite": {
+              "target": "Package",
+              "version": "[1.0.117, )"
+            },
             "System.Net.Http": {
               "target": "Package",
               "version": "[4.3.4, )"
@@ -71,6 +75,10 @@
             "WebSocketSharp-netstandard": {
               "target": "Package",
               "version": "[1.0.1, )"
+            },
+            "sqlite-net-pcl": {
+              "target": "Package",
+              "version": "[1.8.116, )"
             }
           },
           "imports": [

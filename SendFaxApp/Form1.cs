@@ -27,12 +27,14 @@ using FluentScheduler;
 using NLog;
 using WebSocketSharp;
 using System.Configuration;
+using SQLite;
+using Microsoft.VisualBasic.Devices;
 
 namespace SendFaxApp
 {
     public partial class Form1 : Form
     {
-        private String connectionStriong = System.Configuration.ConfigurationManager.
+        private String cnsString = System.Configuration.ConfigurationManager.
     ConnectionStrings["SendFaxApp.Properties.Settings.FaxConfigDBConnectionString"].ConnectionString;
 
         NLog.Logger logger = LogManager.GetCurrentClassLogger();
@@ -42,31 +44,37 @@ namespace SendFaxApp
         public Form1()
         {
             InitializeComponent();
+
+
+
+
+
+            int i = 1;
             initDataConifg();
-            clearOpenFileSendFaxTest();
-            lblInfoTest.Text = Environment.MachineName;
+            // clearOpenFileSendFaxTest();
+            // lblInfoTest.Text = Environment.MachineName;
 
-            JobManager.Initialize();
+            // JobManager.Initialize();
 
-            JobManager.AddJob(
-                () => { DownloadFileAysn(); },
-                s => s.ToRunEvery(GetDownLoadTimeInSecond()).Seconds()
-            );
+            // JobManager.AddJob(
+            //     () => { DownloadFileAysn(); },
+            //     s => s.ToRunEvery(GetDownLoadTimeInSecond()).Seconds()
+            // );
 
-            JobManager.AddJob(
-                () => { LoginAuthenAysn(); },
-                s => s.ToRunEvery(GeLogInTimeInMinute()).Minutes()
-            );
+            // JobManager.AddJob(
+            //     () => { LoginAuthenAysn(); },
+            //     s => s.ToRunEvery(GeLogInTimeInMinute()).Minutes()
+            // );
 
-            JobManager.AddJob(
-                () => { SendFaxAysn(); },
-                s => s.ToRunEvery(GetSendTaxTimeInMinute()).Minutes()
-            );
+            // JobManager.AddJob(
+            //     () => { SendFaxAysn(); },
+            //     s => s.ToRunEvery(GetSendTaxTimeInMinute()).Minutes()
+            // );
 
-            JobManager.AddJob(
-               () => { AutoConnectWebSocket(); },
-               s => s.ToRunEvery(15).Minutes()
-           );
+            // JobManager.AddJob(
+            //    () => { AutoConnectWebSocket(); },
+            //    s => s.ToRunEvery(15).Minutes()
+            //);
         }
 
 
@@ -74,12 +82,13 @@ namespace SendFaxApp
         {
             try
             {
-                return Int32.Parse(ConfigurationManager.AppSettings.Get("DownLoadTimeInSeconds")??"40");
-            }catch(Exception ex)
+                return Int32.Parse(ConfigurationManager.AppSettings.Get("DownLoadTimeInSeconds") ?? "40");
+            }
+            catch (Exception ex)
             {
                 return 40;
             }
-           
+
         }
 
         private int GeLogInTimeInMinute()
@@ -142,18 +151,20 @@ namespace SendFaxApp
 
         private FaxConfig? GetDefaultFaxConfig()
         {
-            using (var context = new DbFaxContext(connectionStriong))
+
+            using (var db = new SQLiteConnection(cnsString))
             {
-                var faxConfig = context.FaxConfigs.FirstOrDefault();
+                var faxConfig = db.Table<FaxConfig>().FirstOrDefault();
                 return faxConfig;
             }
         }
 
         private AuthenMdo? GetDefaultMDOAuthen()
         {
-            using (var context = new DbFaxContext(connectionStriong))
+            using (var db = new SQLiteConnection(cnsString))
             {
-                var authen = context.AuthenMdos.FirstOrDefault();
+
+                var authen = db.Table<AuthenMdo>().FirstOrDefault();
                 return authen;
             }
         }
@@ -165,9 +176,9 @@ namespace SendFaxApp
             {
                 return;
             }
-            using (var context = new DbFaxContext(connectionStriong))
+            using (var db = new SQLiteConnection(cnsString))
             {
-                var config = context.FaxConfigs.FirstOrDefault();
+                var config = db.Table<FaxConfig>().FirstOrDefault();
                 bool isInsert = false;
                 if (config == null)
                 {
@@ -183,9 +194,9 @@ namespace SendFaxApp
 
                 if (isInsert)
                 {
-                    context.FaxConfigs.InsertOnSubmit(config);
+                    db.Insert(config);
                 }
-                context.SubmitChanges();
+                db.Update(config);
             }
             clearOpenFileSendFaxTest();
 
@@ -255,9 +266,9 @@ namespace SendFaxApp
             {
                 return;
             }
-            using (var context = new DbFaxContext(connectionStriong))
+            using (var db = new SQLiteConnection(cnsString))
             {
-                var authen = context.AuthenMdos.FirstOrDefault();
+                var authen = db.Table<AuthenMdo>().FirstOrDefault();
                 bool isInsert = false;
                 if (authen == null)
                 {
@@ -272,17 +283,17 @@ namespace SendFaxApp
                 var authenApiResponse = GetMDOAuthenToken(authen.ApiUrl, authen.Domain, authen.ClientId, authen.ClientSecret);
                 if (authenApiResponse != null)
                 {
-                   
+
 
                     authen.Token = authenApiResponse.Data.Token;
                     authen.TokenTimeout = authenApiResponse.Data.TokenTimeout.ToString();
                     authen.TokentExpiredAt = authenApiResponse.Data.TokenExpiredAt.ToString();
                     if (isInsert)
                     {
-                        context.AuthenMdos.InsertOnSubmit(authen);
+                        db.Insert(authen);
                     }
 
-                    context.SubmitChanges();
+                    db.Update(authen);
 
                     MessageBox.Show("Update Authen Settings Successfully");
                 }
@@ -292,7 +303,7 @@ namespace SendFaxApp
                 }
 
 
-                
+
             }
 
             clearOpenFileSendFaxTest();
@@ -437,9 +448,9 @@ namespace SendFaxApp
             {
                 return;
             }
-            using (var context = new DbFaxContext(connectionStriong))
+            using (var db = new SQLiteConnection(cnsString))
             {
-                var authen = context.AuthenMdos.FirstOrDefault();
+                var authen = db.Table<AuthenMdo>().FirstOrDefault();
                 bool isInsert = false;
                 if (authen == null)
                 {
@@ -452,9 +463,9 @@ namespace SendFaxApp
 
                 if (isInsert)
                 {
-                    context.AuthenMdos.InsertOnSubmit(authen);
+                    db.Insert(authen);
                 }
-                context.SubmitChanges();
+                db.Update(authen);
             }
 
             clearOpenFileSendFaxTest();
@@ -532,10 +543,10 @@ namespace SendFaxApp
             var authen = GetDefaultMDOAuthen();
             if (!IsAuthenInValid(authen))
             {
-                onConnectWebSocket(authen.ApiUrl,authen.WebSocketUrl, authen.Token, authen.Token, authen.WebSocketChanel);
+                onConnectWebSocket(authen.ApiUrl, authen.WebSocketUrl, authen.Token, authen.Token, authen.WebSocketChanel);
                 return;
             }
-           
+
         }
 
         private void btnConnectSocket_Click(object sender, EventArgs e)
@@ -546,13 +557,13 @@ namespace SendFaxApp
                 MessageBox.Show("Not login or config authen");
                 return;
             }
-            onConnectWebSocket(authen.ApiUrl,authen.WebSocketUrl,authen.Domain, authen.Token, authen.WebSocketChanel);
+            onConnectWebSocket(authen.ApiUrl, authen.WebSocketUrl, authen.Domain, authen.Token, authen.WebSocketChanel);
 
             MessageBox.Show("Web socket connect successfully");
 
         }
 
-        private bool onConnectWebSocket(string apiUrl,string host,string domain, String token, String chanel)
+        private bool onConnectWebSocket(string apiUrl, string host, string domain, String token, String chanel)
         {
             Socket socket;
             int i = 0;
@@ -569,7 +580,7 @@ namespace SendFaxApp
                     Reconnection = true,
                     AutoConnect = true,
                     ReconnectionAttempts = 10,
-                   
+
                     ReconnectionDelay = 600,
 
                 };
@@ -589,7 +600,7 @@ namespace SendFaxApp
                     if (data.ToString() == "io server disconnect")
                     {
 
-                        onConnectWebSocket(apiUrl,host, domain, token, chanel);
+                        onConnectWebSocket(apiUrl, host, domain, token, chanel);
                     }
                     else
                     {
@@ -603,7 +614,7 @@ namespace SendFaxApp
                         //SetTimeout(action, 1000);
                     }
 
-                  
+
 
                 });
 
@@ -613,7 +624,7 @@ namespace SendFaxApp
                     {
                         lblSockeStatus.Text = " Number of data: " + (i++);
                     }));
-                    parseFaxRequestData(apiUrl,domain,token,data.ToString());
+                    parseFaxRequestData(apiUrl, domain, token, data.ToString());
                 });
 
                 socket.Connect();
@@ -660,44 +671,46 @@ namespace SendFaxApp
             }
             try
             {
-                using (var context = new DbFaxContext(connectionStriong))
+                using (var db = new SQLiteConnection(cnsString))
                 {
-                    using (var transaction = new TransactionScope())
+
+                    db.BeginTransaction();
+
+
+                    var faxRequest = new FaxRequest();
+                    faxRequest.RequestId = jsonFax.Id;
+                    faxRequest.Subject = jsonFax.Subject;
+                    faxRequest.Domain = jsonFax.Domain;
+                    faxRequest.Address = string.Join(",", jsonFax.Address);
+                    faxRequest.Status = (int)FaxStatusDef.Pending;
+
+                    db.Insert(faxRequest);
+
+                    if (jsonFax.AttachFiles != null && jsonFax.AttachFiles.Any())
                     {
-
-                        var faxRequest = new FaxRequest();
-                        faxRequest.RequestId = jsonFax.Id;
-                        faxRequest.Subject = jsonFax.Subject;
-                        faxRequest.Domain = jsonFax.Domain;
-                        faxRequest.Address = string.Join(",", jsonFax.Address);
-                        faxRequest.Status = (int)FaxStatusDef.Pending;
-
-                        context.FaxRequests.InsertOnSubmit(faxRequest);
-                        context.SubmitChanges();
-                        if (jsonFax.AttachFiles != null && jsonFax.AttachFiles.Any())
+                        List<FaxRequestAttachFile> listFile = new List<FaxRequestAttachFile>();
+                        foreach (var item in jsonFax.AttachFiles)
                         {
-                            List<FaxRequestAttachFile> listFile = new List<FaxRequestAttachFile>();
-                            foreach (var item in jsonFax.AttachFiles)
-                            {
-                                FaxRequestAttachFile fileAttach = new FaxRequestAttachFile();
-                                fileAttach.Domain = item.Domain;
-                                fileAttach.FileName = item.FileName;
-                                fileAttach.FilePath = item.FilePath;
-                                fileAttach.FaxRequestId = faxRequest.Id;
-                                fileAttach.Storage = item.Storage;
-                                fileAttach.Status = (int)FaxStatusDef.Pending;
-                                listFile.Add(fileAttach);
-                            }
-                            context.FaxRequestAttachFiles.InsertAllOnSubmit(listFile);
-                            context.SubmitChanges();
-                            transaction.Complete();
+                            FaxRequestAttachFile fileAttach = new FaxRequestAttachFile();
+                            fileAttach.Domain = item.Domain;
+                            fileAttach.FileName = item.FileName;
+                            fileAttach.FilePath = item.FilePath;
+                            fileAttach.FaxRequestId = faxRequest.Id;
+                            fileAttach.Storage = item.Storage;
+                            fileAttach.Status = (int)FaxStatusDef.Pending;
+                            listFile.Add(fileAttach);
                         }
+                        db.InsertAll(listFile);
+
+                        db.Commit();
+
                     }
                 }
 
                 SocketDataStatusService socketDataStatusService = new SocketDataStatusService(apiUrl, domain);
                 socketDataStatusService.SendStatusSuccess(jsonFax.Id, token);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 logger.Error(ex.Message);
             }
@@ -720,9 +733,9 @@ namespace SendFaxApp
         {
             try
             {
-                using (var context = new DbFaxContext(connectionStriong))
+                using (var db = new SQLiteConnection(cnsString))
                 {
-                    return context.FaxRequests.Any(c => c.RequestId.Equals(requestID));
+                    return db.Table<FaxRequest>().Any(c => c.RequestId.Equals(requestID));
                 }
             }
             catch (Exception ex)
@@ -761,13 +774,13 @@ namespace SendFaxApp
             var config = GetDefaultFaxConfig();
             if (config != null && !String.IsNullOrEmpty(config.FileSaveUrl))
             {
-                using (var context = new DbFaxContext(connectionStriong))
+                using (var db = new SQLiteConnection(cnsString))
                 {
-                    var faxRequest = context.FaxRequests.Where(c => c.Status == (int)FaxStatusDef.Pending).FirstOrDefault();
+                    var faxRequest = db.Table<FaxRequest>().Where(c => c.Status == (int)FaxStatusDef.Pending).FirstOrDefault();
                     if (faxRequest != null)
                     {
-                     
-                        var fileDownloads = context.FaxRequestAttachFiles.Where(c => c.FaxRequestId == faxRequest.Id&&c.Status== (int)FaxStatusDef.Pending).ToList();
+
+                        var fileDownloads = db.Table<FaxRequestAttachFile>().Where(c => c.FaxRequestId == faxRequest.Id && c.Status == (int)FaxStatusDef.Pending).ToList();
                         DownloadServicecs downloadServicecs = new DownloadServicecs(authen.ApiUrl, authen.Domain);
                         downloadServicecs.Token = authen.Token;
                         foreach (var item in fileDownloads)
@@ -775,7 +788,7 @@ namespace SendFaxApp
                             var file = downloadServicecs.download(item.Storage, item.FilePath, item.FileName);
                             if (file == null)
                             {
-                                logger.Info(String.Format("Could not download file storage:{0}_file path:{1}_fileName :{2}",item.Storage,item.FilePath,item.FileName));
+                                logger.Info(String.Format("Could not download file storage:{0}_file path:{1}_fileName :{2}", item.Storage, item.FilePath, item.FileName));
                                 item.Status = (int)FaxStatusDef.DownloadError;
 
                             }
@@ -789,11 +802,11 @@ namespace SendFaxApp
                                 item.Status = (int)FaxStatusDef.Downloading;
                                 item.FaxRealPath = String.Format("{0}\\{1}", config.FileSaveUrl, realPath);
                             }
-                           
-                      
+
+
                         }
                         faxRequest.Status = (int)FaxStatusDef.Downloading;
-                        context.SubmitChanges();
+                        db.Update(faxRequest);
                     }
                 }
             }
@@ -802,9 +815,9 @@ namespace SendFaxApp
 
         private void LoginAuthenAysn()
         {
-            using (var context = new DbFaxContext(connectionStriong))
+            using (var db = new SQLiteConnection(cnsString))
             {
-                var authen = context.AuthenMdos.FirstOrDefault();
+                var authen = db.Table<AuthenMdo>().FirstOrDefault();
                 if (authen != null)
                 {
                     var authenApiResponse = GetMDOAuthenToken(authen.ApiUrl, authen.Domain, authen.ClientId, authen.ClientSecret);
@@ -813,27 +826,27 @@ namespace SendFaxApp
                         authen.Token = authenApiResponse.Data.Token;
                         authen.TokenTimeout = authenApiResponse.Data.TokenTimeout.ToString();
                         authen.TokentExpiredAt = authenApiResponse.Data.TokenExpiredAt.ToString();
-                        context.SubmitChanges();
+                        db.Update(authen);
                     }
                 }
-              
+
             }
         }
 
         private void SendFaxAysn()
         {
-            using (var context = new DbFaxContext(connectionStriong))
+            using (var db = new SQLiteConnection(cnsString))
             {
                 var authen = GetDefaultMDOAuthen();
 
                 var faxConfig = GetDefaultFaxConfig();
-                var faxRequest = context.FaxRequests.Where(c => c.Status == (int)FaxStatusDef.Downloading).FirstOrDefault();
-                var isExistErrorFile = context.FaxRequestAttachFiles.Any(c => c.Status == (int)FaxStatusDef.DownloadError);
-                if (authen != null && faxConfig != null&&!isExistErrorFile)
+                var faxRequest = db.Table<FaxRequest>().Where(c => c.Status == (int)FaxStatusDef.Downloading).FirstOrDefault();
+                var isExistErrorFile = db.Table<FaxRequestAttachFile>().Any(c => c.Status == (int)FaxStatusDef.DownloadError);
+                if (authen != null && faxConfig != null && !isExistErrorFile)
                 {
                     if (faxRequest != null)
                     {
-                        var fileDownloads = context.FaxRequestAttachFiles.Where(c => c.FaxRequestId == faxRequest.Id).ToList();
+                        var fileDownloads = db.Table<FaxRequestAttachFile>().Where(c => c.FaxRequestId == faxRequest.Id).ToList();
 
                         FaxSenderHelper faxSender = new FaxSenderHelper(faxConfig.HostName);
 
@@ -851,7 +864,7 @@ namespace SendFaxApp
 
                         }
                         faxRequest.Status = (int)FaxStatusDef.Faxing;
-                        context.SubmitChanges();
+                        db.Update(faxRequest);
 
                         FaxRecipientsInfo faxRecipientsInfo = new FaxRecipientsInfo();
                         faxRecipientsInfo.listFaxRecipientsItem = new List<FaxRecipientsItem>();
@@ -863,7 +876,7 @@ namespace SendFaxApp
                         clearOpenFileSendFaxTest();
                         var sendFaxResult = faxSender.SendFaxMultiFilesAndMultiUers(faxSenderInfo, faxDocInfo, faxRecipientsInfo);
 
-                        logger.Info(String.Format("Send fax_ RequestId:{0}_address:{1}_result:{2}",faxRequest.RequestId,faxRequest.Address, sendFaxResult));
+                        logger.Info(String.Format("Send fax_ RequestId:{0}_address:{1}_result:{2}", faxRequest.RequestId, faxRequest.Address, sendFaxResult));
 
                         FaxSendStatusService faxSendStatusService = new FaxSendStatusService(authen.ApiUrl, authen.Domain);
                         faxSendStatusService.SendStatus(faxRequest.RequestId, authen.Token, listRecipients.ToList());

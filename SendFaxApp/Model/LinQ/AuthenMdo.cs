@@ -1,34 +1,35 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
-using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SendFaxApp.Model.LinQ
 {
-    [Table(Name = "AuthenMdo")]
+    [Table( "AuthenMdo")]
     public class AuthenMdo
     {
-        [Column(IsPrimaryKey = true, IsDbGenerated = true)]
-        public long Id { get; set; }
-        [Column]
+       
+        [PrimaryKey, AutoIncrement, Column("Id")]
+        public int Id { get; set; }
+        [Column("WebSocketUrl")]
         public string WebSocketUrl { get; set; }
-        [Column]
+        [Column("ApiUrl")]
         public string ApiUrl { get; set; }
-        [Column]
+        [Column("ClientId")]
         public string ClientId { get; set; }
-        [Column]
+        [Column("ClientSecret")]
         public string ClientSecret { get; set; }
-        [Column]
+        [Column("WebSocketChanel")]
         public string WebSocketChanel { get; set; }
-        [Column]
+        [Column("Token")]
         public string Token { get; set; }
-        [Column]
+        [Column("TokentExpiredAt")]
         public string TokentExpiredAt { get; set; }
-        [Column]
+        [Column("TokenTimeout")]
         public string TokenTimeout { get; set; }
-        [Column]
+        [Column("Domain")]
         public string Domain { get; set; }
     }
 }

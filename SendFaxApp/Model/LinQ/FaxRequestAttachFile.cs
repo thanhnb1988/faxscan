@@ -1,30 +1,29 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
-using System.Data.Linq.Mapping;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SendFaxApp.Model.LinQ
 {
-    [Table(Name = "FaxRequestAttachFiles")]
+    [Table("FaxRequestAttachFile")]
     public class FaxRequestAttachFile
     {
-        [Column(IsPrimaryKey = true, IsDbGenerated = true)]
+        [PrimaryKey, AutoIncrement, Column("Id")]
         public long Id { get; set; }
-        [Column]
+        [Column("FileName")]
         public string FileName { get; set; }
-        [Column]
+        [Column("FilePath")]
         public string FilePath { get; set; }
-        [Column]
+        [Column("Storage")]
         public string Storage { get; set; }
-        [Column]
+        [Column("Domain")]
         public string Domain { get; set; }
-        [Column]
+        [Column("Status")]
         public int Status { get; set; }
-        [Column]
+        [Column("FaxRequestId")]
         public long FaxRequestId { get; set; }
-        [Column]
+        [Column("FaxRealPath")]
         public string FaxRealPath { get; set; }
 
         public FaxRequest FaxRequest { get; set; }
