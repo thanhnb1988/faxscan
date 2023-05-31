@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SendFaxApp.Model.LinQ
 {
-    [Table("FaxRequestAttachFile")]
+    [Table("FaxRequestAttachFiles")]
     public class FaxRequestAttachFile
     {
         [PrimaryKey, AutoIncrement, Column("Id")]
