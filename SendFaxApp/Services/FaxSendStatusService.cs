@@ -52,7 +52,7 @@ namespace SendFaxApp.Services
             catch(Exception ex)
             {
                
-                logger.Error(ex.Message);
+                logger.Error("FaxSendStatusService:"+ex.Message);
                 throw ex;
             }
           

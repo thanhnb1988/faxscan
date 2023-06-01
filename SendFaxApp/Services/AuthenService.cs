@@ -48,7 +48,7 @@ namespace SendFaxApp.Services
             }catch(Exception ex)
             {
                 NLog.Logger logger = LogManager.GetCurrentClassLogger();
-                logger.Error(ex.Message);
+                logger.Error("login:"+ex.Message);
                 throw ex;
             }
 

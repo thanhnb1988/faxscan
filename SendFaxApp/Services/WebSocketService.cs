@@ -51,7 +51,7 @@ namespace SendFaxApp.Services
             {
 
                 NLog.Logger logger = LogManager.GetCurrentClassLogger();
-                logger.Error(ex.Message);
+                logger.Error("WebSocketService-registerChanel:"+ex.Message);
                 throw ex;
             }
           

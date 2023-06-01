@@ -40,7 +40,7 @@ namespace SendFaxApp.Services
             catch(Exception ex)
             {
 
-                logger.Error(ex.Message);
+                logger.Error("DownloadServicecs:"+ex.Message);
                 throw ex;
             }
            

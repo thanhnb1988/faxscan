@@ -47,7 +47,7 @@ namespace SendFaxApp.Services
             catch (Exception ex)
             {
                 NLog.Logger logger = LogManager.GetCurrentClassLogger();
-                logger.Error(ex.Message);
+                logger.Error("SocketDataStatusService-SendStatusSuccess:"+ex.Message);
                 throw ex;
             }
 

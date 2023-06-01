@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,12 +22,22 @@ namespace SendFaxApp.Services
 
         public void saveFile(string filePath,string fileName,Stream stream)
         {
-            string fileToWriteTo = String.Format("{0}\\{1}", filePath, fileName);
-            using (Stream streamToWriteTo = File.Open(fileToWriteTo, FileMode.Create))
+            NLog.Logger logger = LogManager.GetCurrentClassLogger();
+            try
             {
-                streamToWriteTo.Position = 0;
-                stream.CopyTo(streamToWriteTo);
+                string fileToWriteTo = String.Format("{0}\\{1}", filePath, fileName);
+                using (Stream streamToWriteTo = File.Open(fileToWriteTo, FileMode.Create))
+                {
+                    streamToWriteTo.Position = 0;
+                    stream.CopyTo(streamToWriteTo);
+                }
             }
+            catch(Exception ex)
+            {
+                logger.Error("FileService-saveFile:" + ex.Message);
+
+            }
+           
            
         }
 
