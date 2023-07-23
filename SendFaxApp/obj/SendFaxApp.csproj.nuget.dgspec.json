@@ -27,7 +27,11 @@
         "frameworks": {
           "net6.0-windows7.0": {
             "targetAlias": "net6.0-windows",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SocketIoClientDotNet-master\\Src\\SocketIoClientDotNet.net45\\SocketIoClientDotNet.net45.csproj": {
+                "projectPath": "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SocketIoClientDotNet-master\\Src\\SocketIoClientDotNet.net45\\SocketIoClientDotNet.net45.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -40,6 +44,10 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "dependencies": {
+            "EngineIoClientDotNet": {
+              "target": "Package",
+              "version": "[0.9.22, )"
+            },
             "FluentScheduler": {
               "target": "Package",
               "version": "[5.5.1, )"
@@ -59,10 +67,6 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
-            },
-            "SocketIoClientDotNet": {
-              "target": "Package",
-              "version": "[0.9.13, )"
             },
             "System.Net.Http": {
               "target": "Package",
@@ -94,6 +98,21 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SocketIoClientDotNet-master\\Src\\SocketIoClientDotNet.net45\\SocketIoClientDotNet.net45.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SocketIoClientDotNet-master\\Src\\SocketIoClientDotNet.net45\\SocketIoClientDotNet.net45.csproj",
+        "projectName": "SocketIoClientDotNet.net45",
+        "projectPath": "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SocketIoClientDotNet-master\\Src\\SocketIoClientDotNet.net45\\SocketIoClientDotNet.net45.csproj",
+        "frameworks": {
+          "net45": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net45": {}
       }
     }
   }

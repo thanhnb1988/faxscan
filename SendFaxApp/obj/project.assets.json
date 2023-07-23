@@ -590,20 +590,6 @@
           }
         }
       },
-      "SocketIoClientDotNet/0.9.13": {
-        "type": "package",
-        "dependencies": {
-          "EngineIoClientDotNet": "0.9.22",
-          "Newtonsoft.Json": "8.0.1",
-          "WebSocket4Net": "0.14.1"
-        },
-        "compile": {
-          "lib/net45/SocketIoClientDotNet.dll": {}
-        },
-        "runtime": {
-          "lib/net45/SocketIoClientDotNet.dll": {}
-        }
-      },
       "System.Collections/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1615,6 +1601,15 @@
             "related": ".xml"
           }
         }
+      },
+      "SocketIoClientDotNet.net45/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/SocketIoClientDotNet.net45.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SocketIoClientDotNet.net45.dll": {}
+        }
       }
     }
   },
@@ -2469,27 +2464,6 @@
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.nuspec",
         "runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so"
-      ]
-    },
-    "SocketIoClientDotNet/0.9.13": {
-      "sha512": "0U1gOjIYNLLeEabCinglXOeY7QyVPMmvE6DRtHgwhq2H8zglPUXIpbbG74FmRVZhDA8ryATpArTeHcT/CP6xXA==",
-      "type": "package",
-      "path": "socketioclientdotnet/0.9.13",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/monoandroid10/SocketIoClientDotNet.dll",
-        "lib/monotouch10/SocketIoClientDotNet.dll",
-        "lib/net35/SocketIoClientDotNet.dll",
-        "lib/net40/SocketIoClientDotNet.dll",
-        "lib/net45/SocketIoClientDotNet.dll",
-        "lib/netcore45/SocketIoClientDotNet.dll",
-        "lib/portable-win81+wpa81/SocketIoClientDotNet.dll",
-        "lib/portable-wpa81+wp81/SocketIoClientDotNet.dll",
-        "lib/windowsphone8/SocketIoClientDotNet.dll",
-        "lib/xamarinios10/SocketIoClientDotNet.dll",
-        "socketioclientdotnet.0.9.13.nupkg.sha512",
-        "socketioclientdotnet.nuspec"
       ]
     },
     "System.Collections/4.3.0": {
@@ -5156,16 +5130,22 @@
         "websocketsharp-netstandard.1.0.1.nupkg.sha512",
         "websocketsharp-netstandard.nuspec"
       ]
+    },
+    "SocketIoClientDotNet.net45/1.0.0": {
+      "type": "project",
+      "path": "../SocketIoClientDotNet-master/Src/SocketIoClientDotNet.net45/SocketIoClientDotNet.net45.csproj",
+      "msbuildProject": "../SocketIoClientDotNet-master/Src/SocketIoClientDotNet.net45/SocketIoClientDotNet.net45.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0-windows7.0": [
+      "EngineIoClientDotNet >= 0.9.22",
       "FluentScheduler >= 5.5.1",
       "Mindbox.Data.Linq >= 10.5.0",
       "NLog >= 4.6.3",
       "NLog.Config >= 4.6.3",
       "Newtonsoft.Json >= 13.0.3",
-      "SocketIoClientDotNet >= 0.9.13",
+      "SocketIoClientDotNet.net45 >= 1.0.0",
       "System.Net.Http >= 4.3.4",
       "WebSocketSharp-netstandard >= 1.0.1"
     ]
@@ -5196,7 +5176,11 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SocketIoClientDotNet-master\\Src\\SocketIoClientDotNet.net45\\SocketIoClientDotNet.net45.csproj": {
+              "projectPath": "C:\\Users\\ThaoPC\\Desktop\\Send-Fax-in-CSharp-master\\faxscan\\SocketIoClientDotNet-master\\Src\\SocketIoClientDotNet.net45\\SocketIoClientDotNet.net45.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -5209,6 +5193,10 @@
       "net6.0-windows7.0": {
         "targetAlias": "net6.0-windows",
         "dependencies": {
+          "EngineIoClientDotNet": {
+            "target": "Package",
+            "version": "[0.9.22, )"
+          },
           "FluentScheduler": {
             "target": "Package",
             "version": "[5.5.1, )"
@@ -5228,10 +5216,6 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[13.0.3, )"
-          },
-          "SocketIoClientDotNet": {
-            "target": "Package",
-            "version": "[0.9.13, )"
           },
           "System.Net.Http": {
             "target": "Package",
@@ -5272,16 +5256,6 @@
       "warningLevel": 1,
       "message": "Package 'EngineIoClientDotNet 0.9.22' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.",
       "libraryId": "EngineIoClientDotNet",
-      "targetGraphs": [
-        "net6.0-windows7.0"
-      ]
-    },
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'SocketIoClientDotNet 0.9.13' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.",
-      "libraryId": "SocketIoClientDotNet",
       "targetGraphs": [
         "net6.0-windows7.0"
       ]

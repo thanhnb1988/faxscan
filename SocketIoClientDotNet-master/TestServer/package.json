@@ -1,0 +1,12 @@
+{
+  "name": "socket.io-client.testserver",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "^4.15.2",
+    "socket.io": "^1.7.3",
+    "expect": "^1.20.2",
+    "expect.js": "^0.3.1",
+    "utf8": "^2.1.2"
+  }
+}
