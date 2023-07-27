@@ -240,10 +240,14 @@ namespace Quobject.SocketIoClientDotNet.Client
                     log2.Info("Manager Open start");
 
                     log2.Info(string.Format("connect attempt timed out after {0}", timeout));
+                    if(openSub!=null){
                     openSub.Destroy();
+                    }
+                    if(socket!=null){
                     socket.Close();
                     socket.Emit(Engine.EVENT_ERROR, new SocketIOException("timeout"));
                     EmitAll(EVENT_CONNECT_TIMEOUT, timeout);
+                    }
                     log2.Info("Manager Open finish");
 
                 }, timeout);
