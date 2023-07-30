@@ -67,7 +67,7 @@ namespace SendFaxApp
 
             JobManager.AddJob(
                () => { AutoConnectWebSocket(); },
-               s => s.ToRunEvery(15).Minutes()
+               s => s.ToRunEvery(60).Minutes()
            );
         }
 
