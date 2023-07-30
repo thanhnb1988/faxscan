@@ -65,10 +65,10 @@ namespace SendFaxApp
                 s => s.ToRunEvery(GetSendTaxTimeInMinute()).Minutes()
             );
 
-            JobManager.AddJob(
-               () => { AutoConnectWebSocket(); },
-               s => s.ToRunEvery(60).Minutes()
-           );
+           // JobManager.AddJob(
+           //    () => { AutoConnectWebSocket(); },
+           //    s => s.ToRunEvery(60).Minutes()
+           //);
         }
 
 
