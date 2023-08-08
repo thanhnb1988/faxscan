@@ -351,11 +351,13 @@ namespace Quobject.SocketIoClientDotNet.Client
 
         private void Destroy()
         {
+           if(Subs!=null){
             foreach (var sub in Subs)
             {
                 sub.Destroy();
             }
             Subs = Subs.Clear();
+            }
 
             _io.Destroy(this);
         }
