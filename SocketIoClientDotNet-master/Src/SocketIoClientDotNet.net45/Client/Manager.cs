@@ -246,19 +246,22 @@ namespace Quobject.SocketIoClientDotNet.Client
                     if(socket!=null){
                     socket.Close();
                     socket.Emit(Engine.EVENT_ERROR, new SocketIOException("timeout"));
-                    EmitAll(EVENT_CONNECT_TIMEOUT, timeout);
+                    
                     }
+                    EmitAll(EVENT_CONNECT_TIMEOUT, timeout);
                     log2.Info("Manager Open finish");
 
                 }, timeout);
-
+                if(Subs!=null){
                 Subs.Enqueue(new On.ActionHandleImpl(timer.Stop));
+                }
                 ;
 
             }
-
+             if(Subs!=null){
             Subs.Enqueue(openSub);
             Subs.Enqueue(errorSub);
+            }
             EngineSocket.Open();
 
             return this;
