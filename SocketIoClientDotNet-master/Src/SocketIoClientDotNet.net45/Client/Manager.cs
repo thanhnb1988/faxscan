@@ -112,11 +112,16 @@ namespace Quobject.SocketIoClientDotNet.Client
 
         private void EmitAll(string eventString, params object[] args)
         {
-            Emit(eventString, args);
-            foreach (var socket in Nsps.Values)
+            if(Nsps!=null&&Nsps.Values!=null&& Nsps.Values.Any())
             {
-                socket.Emit(eventString, args);
+                Emit(eventString, args);
+
+                foreach (var socket in Nsps.Values)
+                {
+                    socket.Emit(eventString, args);
+                }
             }
+            
         }
 
         public bool Reconnection()
@@ -241,24 +246,28 @@ namespace Quobject.SocketIoClientDotNet.Client
 
                     log2.Info(string.Format("connect attempt timed out after {0}", timeout));
                     if(openSub!=null){
-                    openSub.Destroy();
+                        openSub.Destroy();
                     }
-                    if(socket!=null){
-                    socket.Close();
-                    socket.Emit(Engine.EVENT_ERROR, new SocketIOException("timeout"));
+                    if(socket!=null)
+                    {
+                         socket.Close();
+                          socket.Emit(Engine.EVENT_ERROR, new SocketIOException("timeout"));
+                    
+                    }
                     EmitAll(EVENT_CONNECT_TIMEOUT, timeout);
-                    }
                     log2.Info("Manager Open finish");
 
                 }, timeout);
-
+                if(Subs!=null){
                 Subs.Enqueue(new On.ActionHandleImpl(timer.Stop));
+                }
                 ;
 
             }
-
-            Subs.Enqueue(openSub);
-            Subs.Enqueue(errorSub);
+             if(Subs!=null){
+              Subs.Enqueue(openSub);
+              Subs.Enqueue(errorSub);
+            }
             EngineSocket.Open();
 
             return this;
@@ -347,11 +356,15 @@ namespace Quobject.SocketIoClientDotNet.Client
 
         internal void Destroy(Socket socket)
         {
-            OpeningSockets.Remove(socket);
-            if (OpeningSockets.Count == 0)
+            if (OpeningSockets != null)
             {
-                Close();
+                OpeningSockets.Remove(socket);
+                if (OpeningSockets.Count == 0)
+                {
+                    Close();
+                }
             }
+           
         }
 
 

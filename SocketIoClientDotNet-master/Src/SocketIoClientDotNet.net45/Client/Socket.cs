@@ -321,23 +321,30 @@ namespace Quobject.SocketIoClientDotNet.Client
 
         private void EmitBuffered()
         {
-            while (ReceiveBuffer.Count() > 0)
+            if(ReceiveBuffer!=null&& ReceiveBuffer.Any())
             {
-                List<object> data;
-                ReceiveBuffer = ReceiveBuffer.Dequeue(out data);
-                var eventString = (string) data[0];
-                base.Emit(eventString, data.ToArray());
+                while (ReceiveBuffer.Count() > 0)
+                {
+                    List<object> data;
+                    ReceiveBuffer = ReceiveBuffer.Dequeue(out data);
+                    var eventString = (string)data[0];
+                    base.Emit(eventString, data.ToArray());
+                }
+                ReceiveBuffer = ReceiveBuffer.Clear();
             }
-            ReceiveBuffer = ReceiveBuffer.Clear();
+            
 
-           
-            while (SendBuffer.Count() > 0)
+           if(SendBuffer!=null&& SendBuffer.Any())
             {
-                Packet packet;
-                SendBuffer = SendBuffer.Dequeue(out packet);
-                Packet(packet);
+                while (SendBuffer.Count() > 0)
+                {
+                    Packet packet;
+                    SendBuffer = SendBuffer.Dequeue(out packet);
+                    Packet(packet);
+                }
+                SendBuffer = SendBuffer.Clear();
             }
-            SendBuffer = SendBuffer.Clear();
+            
         }
 
 
@@ -351,6 +358,7 @@ namespace Quobject.SocketIoClientDotNet.Client
 
         private void Destroy()
         {
+
             if(Subs!=null&& Subs.Any())
             {
                 foreach (var sub in Subs)
@@ -363,7 +371,7 @@ namespace Quobject.SocketIoClientDotNet.Client
             {
                 _io.Destroy(this);
             }
-
+      
             
         }
 
