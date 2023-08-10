@@ -431,7 +431,7 @@ namespace Quobject.SocketIoClientDotNet.Client
 
             ReadyState = ReadyStateEnum.CLOSED;
 
-            if (EngineSocket != null)
+            if (this.EngineSocket != null)
             {
                 this.EngineSocket.Close();
             }
